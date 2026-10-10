@@ -2,215 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111111">
-  <title>Salsacos Food Ordering</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <title>Salsacos | Order Online</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --bg: #111111;
-      --card: #1e1e1e;
+      --bg: #101010;
+      --card: #1b1b1b;
       --gold: #f4b400;
       --text: #ffffff;
-      --muted: #b8b8b8;
+      --muted: #b9b9b9;
       --border: #373737;
-      --green: #22a96b;
+      --green: #25a56a;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding-bottom: 35px;
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    button, input, textarea, select { font: inherit; }
-    button { cursor: pointer; }
+    input, select, textarea, button { font: inherit; }
 
     .container {
       max-width: 650px;
+      padding: 16px;
       margin: auto;
-      padding: 15px;
     }
 
     .hero {
-      text-align: center;
-      padding: 27px 15px;
+      padding: 30px 18px;
       border-radius: 18px;
-      border: 1px solid #665018;
-      background: linear-gradient(140deg, #382a0b, #151515 75%);
+      text-align: center;
+      border: 1px solid #634d15;
+      background: radial-gradient(circle at top, #3a2c0d, #151515 75%);
     }
 
     .logo {
-      color: var(--gold);
-      font-size: 34px;
+      font-size: 35px;
       font-weight: 900;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+      color: var(--gold);
     }
 
-    .hero p, .muted {
+    .hero p {
       color: var(--muted);
-      line-height: 1.5;
+      font-size: 14px;
     }
 
-    .location-badge {
+    .badge {
       display: inline-block;
-      border: 1px solid #735a19;
-      color: #ffdb72;
-      border-radius: 20px;
-      padding: 8px 12px;
-      font-size: 13px;
+      margin-top: 8px;
+      padding: 8px 13px;
+      border: 1px solid #72591a;
+      border-radius: 25px;
+      color: #ffdc7a;
+      font-size: 12px;
     }
 
-    h2 { font-size: 20px; margin: 23px 0 12px; }
+    h2 {
+      margin: 23px 0 12px;
+      font-size: 19px;
+    }
+
+    .section {
+      padding: 16px;
+      margin-bottom: 13px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
 
     .categories {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 3px 0 13px;
+      padding-bottom: 12px;
     }
 
     .category {
-      white-space: nowrap;
+      flex: 0 0 auto;
+      padding: 10px 14px;
       background: #202020;
       color: white;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 10px 14px;
+      border-radius: 22px;
     }
 
     .category.active {
       background: var(--gold);
       color: #111;
-      border-color: var(--gold);
       font-weight: bold;
+      border-color: var(--gold);
     }
 
     .menu {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      gap: 11px;
     }
 
     .product {
-      border: 1px solid var(--border);
-      background: var(--card);
       border-radius: 13px;
+      border: 1px solid var(--border);
       overflow: hidden;
+      background: var(--card);
     }
 
     .product-image {
-      height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 48px;
-      background: linear-gradient(135deg, #342a16, #181818);
+      height: 95px;
+      background: linear-gradient(135deg, #352b16, #171717);
+      font-size: 43px;
     }
 
     .product-info { padding: 11px; }
 
     .product-name {
-      min-height: 36px;
       font-size: 14px;
       font-weight: bold;
+      min-height: 35px;
     }
 
     .product-price {
       color: var(--gold);
       font-weight: bold;
-      margin: 8px 0 12px;
+      margin: 7px 0 10px;
     }
 
-    .add-button, .primary-button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 9px;
-      background: var(--gold);
-      color: #111;
-      font-weight: bold;
-    }
-
-    .primary-button { padding: 15px; font-size: 16px; }
-    button:disabled { opacity: .6; cursor: wait; }
-
-    .section-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .cart-row {
+    .quantity-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
+      gap: 6px;
     }
 
-    .cart-row:last-child { border-bottom: 0; }
-
-    .cart-name { font-size: 14px; font-weight: bold; }
-    .cart-price { color: var(--muted); font-size: 12px; margin-top: 5px; }
-
-    .quantity {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .quantity button {
+    .quantity-row button {
       width: 30px;
       height: 30px;
-      color: var(--gold);
-      background: #292315;
-      border: 1px solid #665018;
       border-radius: 7px;
+      border: 1px solid #6b5519;
+      color: var(--gold);
+      background: #282214;
       font-size: 18px;
     }
 
-    .empty {
-      padding: 18px 0;
-      color: var(--muted);
-      text-align: center;
-    }
+    .quantity-row strong { font-size: 14px; }
 
-    .field { margin-bottom: 15px; }
+    .field { margin-bottom: 16px; }
     .field:last-child { margin-bottom: 0; }
 
     .field label {
       display: block;
+      margin-bottom: 7px;
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 7px;
     }
 
-    .field input, .field textarea, .field select {
+    .field input,
+    .field select,
+    .field textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #444;
       border-radius: 9px;
-      background: #131313;
+      background: #121212;
       color: white;
       outline: none;
     }
 
-    .field input:focus, .field textarea:focus,
-    .field select:focus { border-color: var(--gold); }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+    }
 
-    .field textarea { min-height: 78px; resize: vertical; }
+    .field textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
 
-    .option-list { display: grid; gap: 9px; }
+    .option-list {
+      display: grid;
+      gap: 9px;
+    }
 
     .option {
       display: flex;
@@ -219,71 +201,94 @@
       padding: 12px;
       border: 1px solid var(--border);
       border-radius: 9px;
-      background: #161616;
+      background: #151515;
       font-size: 14px;
     }
 
-    .option input, .checkbox-row input {
+    .option input,
+    .check-row input {
       accent-color: var(--gold);
     }
 
-    .summary-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 12px 0;
-      font-size: 14px;
-      color: var(--muted);
+    .primary-button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--gold);
+      color: #111;
+      font-weight: bold;
+      font-size: 16px;
     }
 
-    .summary-line.total {
-      padding-top: 13px;
+    .secondary-button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #665019;
+      border-radius: 9px;
+      background: #262115;
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .notice {
+      padding: 12px;
+      margin-top: 12px;
+      background: #2a2416;
+      color: #ffdf8a;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .check-row {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .total-line {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 14px;
+      margin-top: 14px;
       border-top: 1px solid var(--border);
       color: var(--gold);
       font-size: 19px;
       font-weight: bold;
     }
 
-    .notice {
-      padding: 12px;
-      border-radius: 9px;
-      background: #2b2415;
-      color: #ffdc82;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 12px;
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 13px;
-    }
-
-    .small-text {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .hidden { display: none !important; }
-
     .footer {
+      margin: 25px 0;
       text-align: center;
       color: #777;
       font-size: 12px;
       line-height: 1.8;
-      margin-top: 25px;
     }
+
+    .hidden { display: none !important; }
 
     @media (max-width: 360px) {
       .container { padding: 10px; }
       .menu { gap: 8px; }
-      .product-info { padding: 9px; }
+      .product-info { padding: 8px; }
     }
   </style>
 </head>
@@ -293,12 +298,12 @@
 
   <header class="hero">
     <div class="logo">SALSACOS</div>
-    <p>Fresh food. Great taste. Happy moments.</p>
-    <div class="location-badge">📍 Serving customers in Adama and beyond</div>
+    <p>Fresh Food. Great Taste. Every Time.</p>
+    <div class="badge">📍 Adama, Ethiopia · Order Online</div>
   </header>
 
   <section>
-    <h2>🍽️ Our Menu</h2>
+    <h2>Our Menu</h2>
     <div class="categories" id="categories">
       <button class="category active" data-category="all">All</button>
       <button class="category" data-category="food">Food</button>
@@ -309,40 +314,24 @@
       <button class="category" data-category="beer">Beer</button>
     </div>
     <div class="menu" id="menu"></div>
+    <p class="muted">Choose your items and quantities, then submit your order below.</p>
   </section>
 
   <section>
-    <h2>🛒 Your Cart</h2>
-    <div class="section-card">
-      <div id="cartItems">
-        <div class="empty">Your cart is empty.</div>
-      </div>
-      <div class="summary-line">
-        <span>Subtotal</span><span id="subtotal">0 ETB</span>
-      </div>
-      <div class="summary-line">
-        <span>Delivery fee</span><span id="deliveryFee">0 ETB</span>
-      </div>
-      <div class="summary-line total">
-        <span>Total</span><span id="total">0 ETB</span>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>📦 Your Information</h2>
-    <div class="section-card">
+    <h2>Customer Information</h2>
+    <div class="section">
 
       <div class="field">
         <label for="customerName">Full Name *</label>
-        <input id="customerName" type="text" placeholder="Enter your full name"
-               autocomplete="name" required>
+        <input id="customerName" type="text"
+          placeholder="Enter your full name" autocomplete="name" required>
       </div>
 
       <div class="field">
         <label for="phone">Phone Number *</label>
-        <input id="phone" type="tel" placeholder="09XXXXXXXX"
-               autocomplete="tel" required>
+        <input id="phone" type="tel"
+          placeholder="09XXXXXXXX" autocomplete="tel" required>
+        <p class="muted">Enter a phone number the restaurant can reach.</p>
       </div>
 
       <div class="field">
@@ -366,27 +355,25 @@
       <div class="field" id="addressField">
         <label for="address">Delivery Address *</label>
         <textarea id="address"
-          placeholder="Enter your city, area, street, building, or nearby landmark"></textarea>
-        <p class="small-text">
-          Enter the delivery address that works for you. GPS is optional.
-        </p>
-
-        <button type="button" class="add-button" id="locationButton">
-          📍 Share My Current Location (Optional)
+          placeholder="City, area, street, building, or nearby landmark"></textarea>
+        <p class="muted">GPS is optional. You can enter an address manually.</p>
+        <button class="secondary-button" type="button" id="locationButton">
+          Share Current Location (Optional)
         </button>
-        <p class="small-text" id="locationStatus"></p>
+        <p class="muted" id="locationStatus"></p>
       </div>
 
       <div class="field">
-        <label for="notes">Order Notes (Optional)</label>
-        <textarea id="notes" placeholder="Special requests or directions"></textarea>
+        <label for="notes">Additional Instructions (Optional)</label>
+        <textarea id="notes"
+          placeholder="Special requests or delivery directions"></textarea>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>💳 Payment Method</h2>
-    <div class="section-card">
+    <h2>Payment Method</h2>
+    <div class="section">
       <div class="option-list">
         <label class="option">
           <input type="radio" name="paymentType" value="telebirr" checked>
@@ -398,20 +385,21 @@
         </label>
         <label class="option">
           <input type="radio" name="paymentType" value="cash">
-          <span>💵 Cash</span>
+          <span>💵 Cash Payment</span>
         </label>
       </div>
+
       <div class="notice" id="paymentNotice">
-        Telebirr: 0907490883. Use your order code as a payment reference
-        when instructed by the restaurant.
+        Telebirr: 0907490883. Follow the payment instructions in your
+        order confirmation. Payment is confirmed by the restaurant.
       </div>
     </div>
   </section>
 
   <section id="ageSection" class="hidden">
-    <h2>🔞 Age Confirmation</h2>
-    <div class="section-card">
-      <label class="checkbox-row">
+    <h2>Age Confirmation</h2>
+    <div class="section">
+      <label class="check-row">
         <input type="checkbox" id="ageConfirmed">
         <span>I confirm that I meet the legal age requirements for purchasing alcoholic beverages.</span>
       </label>
@@ -419,30 +407,42 @@
   </section>
 
   <section>
-    <h2>✅ Confirm Order</h2>
-    <div class="section-card">
-      <label class="checkbox-row">
+    <h2>Order Summary</h2>
+    <div class="section">
+      <div id="summaryItems">
+        <p class="muted">Your selected items will appear here.</p>
+      </div>
+      <div class="total-line">
+        <span>Estimated Total</span>
+        <span id="total">0 ETB</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Submit Your Order</h2>
+    <div class="section">
+      <label class="check-row">
         <input type="checkbox" id="confirmDetails">
-        <span>I confirm that my contact details and order information are correct.</span>
+        <span>I confirm that my order and contact details are correct.</span>
       </label>
 
-      <button type="button" class="primary-button" id="placeOrder">
+      <button class="primary-button" id="placeOrder" type="button">
         Submit Order
       </button>
 
-      <p class="small-text">
-        After submission, the Salsacos bot will confirm your order and send
-        your order code. Your order will also be sent to the restaurant's
-        Telegram channel. Payment is not considered verified until the
-        restaurant confirms it.
+      <p class="muted">
+        After submission, the Salsacos bot will send you a confirmation
+        and unique order code. Your order will also be forwarded to
+        the restaurant's Telegram channel.
       </p>
     </div>
   </section>
 
   <footer class="footer">
-    Salsacos Food Ordering<br>
-    Customer service: @zilasun<br>
-    Orders channel: @salsacos
+    <strong>Salsacos</strong><br>
+    Customer Service: @zilasun<br>
+    Orders Channel: @salsacos
   </footer>
 
 </main>
@@ -481,111 +481,113 @@
     {id:"arada_beer", name:"Arada Beer", price:120, category:"beer", emoji:"🍺", alcohol:true}
   ];
 
-  const cart = {};
+  const quantities = {};
   let activeCategory = "all";
   let customerLocation = null;
   let submitting = false;
 
-  const menuElement = document.getElementById("menu");
-  const cartElement = document.getElementById("cartItems");
+  // Automatically fill the customer's name from their Telegram profile.
+  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    const user = tg.initDataUnsafe.user;
+    const nameInput = document.getElementById("customerName");
 
-  function money(amount) {
-    return amount.toLocaleString("en-US") + " ETB";
+    if (!nameInput.value) {
+      nameInput.value = [
+        user.first_name,
+        user.last_name
+      ].filter(Boolean).join(" ");
+    }
   }
 
-  function orderType() {
+  function money(value) {
+    return value.toLocaleString("en-US") + " ETB";
+  }
+
+  function getOrderType() {
     return document.querySelector('input[name="orderType"]:checked').value;
   }
 
-  function paymentType() {
+  function getPaymentType() {
     return document.querySelector('input[name="paymentType"]:checked').value;
   }
 
-  function subtotal() {
-    return Object.entries(cart).reduce((sum, [id, qty]) => {
-      const item = MENU.find(p => p.id === id);
-      return sum + (item ? item.price * qty : 0);
+  function getSubtotal() {
+    return Object.entries(quantities).reduce((sum, [id, qty]) => {
+      const product = MENU.find(item => item.id === id);
+      return sum + (product ? product.price * qty : 0);
     }, 0);
   }
 
-  function deliveryFee() {
-    return orderType() === "delivery" ? 50 : 0;
+  function getDeliveryFee() {
+    return getOrderType() === "delivery" ? 50 : 0;
   }
 
-  function total() {
-    return subtotal() + deliveryFee();
+  function getTotal() {
+    return getSubtotal() + getDeliveryFee();
   }
 
   function renderMenu() {
-    const items = MENU.filter(item =>
+    const products = MENU.filter(item =>
       activeCategory === "all" || item.category === activeCategory
     );
 
-    menuElement.innerHTML = items.map(item => `
+    document.getElementById("menu").innerHTML = products.map(item => `
       <article class="product">
         <div class="product-image">${item.emoji}</div>
         <div class="product-info">
           <div class="product-name">${item.name}</div>
           <div class="product-price">${money(item.price)}</div>
-          <button type="button" class="add-button" data-add="${item.id}">
-            ${cart[item.id] ? "Add More +" : "Add to Cart +"}
-          </button>
+          <div class="quantity-row">
+            <button type="button" data-minus="${item.id}" aria-label="Remove one">−</button>
+            <strong id="qty-${item.id}">${quantities[item.id] || 0}</strong>
+            <button type="button" data-plus="${item.id}" aria-label="Add one">+</button>
+          </div>
         </div>
       </article>
     `).join("");
   }
 
-  function renderCart() {
-    const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+  function renderSummary() {
+    const selected = Object.entries(quantities)
+      .filter(([, qty]) => qty > 0);
 
-    if (!entries.length) {
-      cartElement.innerHTML = '<div class="empty">Your cart is empty.</div>';
+    const summary = document.getElementById("summaryItems");
+
+    if (selected.length === 0) {
+      summary.innerHTML = '<p class="muted">Choose items from the menu above.</p>';
     } else {
-      cartElement.innerHTML = entries.map(([id, qty]) => {
+      summary.innerHTML = selected.map(([id, qty]) => {
         const item = MENU.find(p => p.id === id);
         return `
-          <div class="cart-row">
-            <div>
-              <div class="cart-name">${item.emoji} ${item.name}</div>
-              <div class="cart-price">${money(item.price)} each</div>
-              <div class="cart-price">Line total: ${money(item.price * qty)}</div>
-            </div>
-            <div class="quantity">
-              <button type="button" data-remove="${id}" aria-label="Remove one">−</button>
-              <strong>${qty}</strong>
-              <button type="button" data-add="${id}" aria-label="Add one">+</button>
-            </div>
+          <div style="display:flex;justify-content:space-between;gap:10px;margin:12px 0;font-size:14px">
+            <span>${item.name} × ${qty}</span>
+            <strong>${money(item.price * qty)}</strong>
           </div>
         `;
       }).join("");
     }
 
-    document.getElementById("subtotal").textContent = money(subtotal());
-    document.getElementById("deliveryFee").textContent = money(deliveryFee());
-    document.getElementById("total").textContent = money(total());
-
+    document.getElementById("total").textContent = money(getTotal());
     updateAgeSection();
   }
 
-  function addItem(id) {
+  function changeQuantity(id, change) {
     if (!MENU.some(item => item.id === id)) return;
-    cart[id] = (cart[id] || 0) + 1;
-    renderMenu();
-    renderCart();
-  }
 
-  function removeItem(id) {
-    if (!cart[id]) return;
-    cart[id]--;
+    quantities[id] = Math.max(0, (quantities[id] || 0) + change);
 
-    if (cart[id] <= 0) delete cart[id];
+    if (quantities[id] === 0) delete quantities[id];
 
-    renderMenu();
-    renderCart();
+    const quantityElement = document.getElementById("qty-" + id);
+    if (quantityElement) {
+      quantityElement.textContent = quantities[id] || 0;
+    }
+
+    renderSummary();
   }
 
   function updateAgeSection() {
-    const containsAlcohol = Object.keys(cart).some(id => {
+    const containsAlcohol = Object.keys(quantities).some(id => {
       const item = MENU.find(p => p.id === id);
       return item && item.alcohol;
     });
@@ -611,32 +613,32 @@
     renderMenu();
   });
 
-  document.addEventListener("click", event => {
-    const add = event.target.closest("[data-add]");
-    const remove = event.target.closest("[data-remove]");
+  document.getElementById("menu").addEventListener("click", event => {
+    const plus = event.target.closest("[data-plus]");
+    const minus = event.target.closest("[data-minus]");
 
-    if (add) addItem(add.dataset.add);
-    if (remove) removeItem(remove.dataset.remove);
+    if (plus) changeQuantity(plus.dataset.plus, 1);
+    if (minus) changeQuantity(minus.dataset.minus, -1);
   });
 
   document.querySelectorAll('input[name="orderType"]').forEach(input => {
     input.addEventListener("change", () => {
       document.getElementById("addressField")
-        .classList.toggle("hidden", orderType() !== "delivery");
-      renderCart();
+        .classList.toggle("hidden", getOrderType() !== "delivery");
+      renderSummary();
     });
   });
 
   document.querySelectorAll('input[name="paymentType"]').forEach(input => {
     input.addEventListener("change", () => {
-      const messages = {
-        telebirr: "Telebirr: 0907490883. Use your order code as a payment reference when instructed.",
-        cbe: "CBE account: 1000539408872. Use your order code as a payment reference when instructed.",
-        cash: "Cash selected. Follow the payment instructions sent by the Salsacos bot."
+      const notices = {
+        telebirr: "Telebirr: 0907490883. Follow the instructions in your bot confirmation. Payment must be verified by the restaurant.",
+        cbe: "CBE account: 1000539408872. Include your order code as a reference when instructed. Payment must be verified by the restaurant.",
+        cash: "Cash selected. Follow the restaurant's instructions in your bot confirmation."
       };
 
       document.getElementById("paymentNotice").textContent =
-        messages[paymentType()];
+        notices[getPaymentType()];
     });
   });
 
@@ -656,11 +658,11 @@
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         };
-        status.textContent = "Location added to your order.";
+        status.textContent = "Location captured. You can still edit your address.";
       },
       () => {
         customerLocation = null;
-        status.textContent = "Location not shared. You can still submit your order.";
+        status.textContent = "Location was not shared. You can still submit your order.";
       },
       {enableHighAccuracy:true, timeout:12000, maximumAge:60000}
     );
@@ -669,10 +671,11 @@
   document.getElementById("placeOrder").addEventListener("click", () => {
     if (submitting) return;
 
-    const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+    const selected = Object.entries(quantities)
+      .filter(([, qty]) => qty > 0);
 
-    if (!entries.length) {
-      alert("Please add items to your cart.");
+    if (!selected.length) {
+      alert("Please select at least one menu item.");
       return;
     }
 
@@ -680,10 +683,10 @@
     const phone = document.getElementById("phone").value.trim();
     const address = document.getElementById("address").value.trim();
     const notes = document.getElementById("notes").value.trim();
-    const type = orderType();
+    const type = getOrderType();
 
     if (!name) {
-      alert("Please enter your name.");
+      alert("Please enter your full name.");
       document.getElementById("customerName").focus();
       return;
     }
@@ -695,17 +698,17 @@
     }
 
     if (type === "delivery" && !address) {
-      alert("Please enter your delivery address. GPS is not required.");
+      alert("Please enter your delivery address. GPS is optional.");
       document.getElementById("address").focus();
       return;
     }
 
     if (!document.getElementById("confirmDetails").checked) {
-      alert("Please confirm your order information.");
+      alert("Please confirm your order details.");
       return;
     }
 
-    const containsAlcohol = entries.some(([id]) => {
+    const containsAlcohol = selected.some(([id]) => {
       const item = MENU.find(p => p.id === id);
       return item && item.alcohol;
     });
@@ -716,48 +719,46 @@
     }
 
     if (!tg || !tg.initData) {
-      alert(
-        "Please open this Mini App inside Telegram using your Salsacos bot. " +
-        "Orders cannot be sent to the bot from a regular browser."
-      );
+      alert("Please open this Mini App through your Salsacos Telegram bot to submit an order.");
       return;
     }
 
     const payload = {
       action: "new_order",
       store: "Salsacos",
-      items: entries.map(([id, quantity]) => ({id, quantity})),
+      items: selected.map(([id, quantity]) => ({id, quantity})),
       order_type: type,
-      payment_type: paymentType(),
+      payment_type: getPaymentType(),
       name: name,
       phone: phone,
       address: type === "delivery" ? address : "",
       notes: notes,
-      subtotal: subtotal(),
-      delivery_fee: deliveryFee(),
-      total: total(),
+      subtotal: getSubtotal(),
+      delivery_fee: getDeliveryFee(),
+      total: getTotal(),
       age_confirmed: containsAlcohol &&
         document.getElementById("ageConfirmed").checked,
       latitude: customerLocation ? customerLocation.latitude : null,
       longitude: customerLocation ? customerLocation.longitude : null
     };
 
-    /*
-      The bot must receive WEB_APP_DATA, validate the order,
-      create the unique order code, reply to the customer,
-      and forward the order to @salsacos.
-    */
-
     try {
       submitting = true;
 
       const button = document.getElementById("placeOrder");
       button.disabled = true;
-      button.textContent = "Submitting Order…";
+      button.textContent = "Submitting…";
 
       tg.sendData(JSON.stringify(payload));
-      // Telegram closes the Mini App after sendData().
-      // Customer confirmation must be sent by the Python bot.
+
+      /*
+       * The Python bot must:
+       * 1. Receive WEB_APP_DATA.
+       * 2. Validate item IDs, quantities and prices.
+       * 3. Generate a unique order code.
+       * 4. Send a confirmation to the customer.
+       * 5. Forward the order to @salsacos.
+       */
     } catch (error) {
       submitting = false;
 
@@ -765,12 +766,12 @@
       button.disabled = false;
       button.textContent = "Submit Order";
 
-      alert("Order submission failed. Please reopen the Mini App and try again.");
+      alert("Submission failed. Please reopen the Mini App and try again.");
     }
   });
 
   renderMenu();
-  renderCart();
+  renderSummary();
 </script>
 </body>
 </html>
