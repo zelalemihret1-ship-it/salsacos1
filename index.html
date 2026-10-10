@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101010">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171717">
   <title>Salsacos | Order Online</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
       --bg: #101010;
-      --card: #1b1b1b;
-      --gold: #f4b400;
+      --surface: #1c1c1c;
+      --surface2: #262626;
       --text: #ffffff;
-      --muted: #b9b9b9;
-      --border: #373737;
-      --green: #25a56a;
+      --muted: #b6b6b6;
+      --accent: #ffbd39;
+      --accent-dark: #e99b11;
+      --border: rgba(255,255,255,.09);
+      --danger: #ff7777;
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
@@ -24,754 +28,904 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+      padding: 0 0 35px;
     }
 
-    input, select, textarea, button { font: inherit; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
 
-    .container {
-      max-width: 650px;
-      padding: 16px;
+    .app {
+      width: 100%;
+      max-width: 720px;
       margin: auto;
+      padding: 16px;
     }
 
     .hero {
-      padding: 30px 18px;
-      border-radius: 18px;
-      text-align: center;
-      border: 1px solid #634d15;
-      background: radial-gradient(circle at top, #3a2c0d, #151515 75%);
+      position: relative;
+      overflow: hidden;
+      padding: 25px 21px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 90% 0%, rgba(255,189,57,.27), transparent 35%),
+        linear-gradient(135deg, #282019, #171717 65%);
+      border: 1px solid rgba(255,189,57,.22);
+      margin-bottom: 20px;
     }
 
-    .logo {
-      font-size: 35px;
+    .brand {
+      color: var(--accent);
       font-weight: 900;
-      letter-spacing: 3px;
-      color: var(--gold);
+      letter-spacing: 2px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 7px;
+      font-size: clamp(29px, 7vw, 40px);
+      line-height: 1.08;
     }
 
     .hero p {
-      color: var(--muted);
-      font-size: 14px;
+      color: #d0d0d0;
+      margin: 0;
+      line-height: 1.5;
     }
 
-    .badge {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 8px 13px;
-      border: 1px solid #72591a;
-      border-radius: 25px;
-      color: #ffdc7a;
-      font-size: 12px;
+    .section { margin-top: 22px; }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
     h2 {
-      margin: 23px 0 12px;
       font-size: 19px;
+      margin: 0;
     }
 
-    .section {
-      padding: 16px;
-      margin-bottom: 13px;
-      background: var(--card);
+    .subtext {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .profile-card, .panel {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .profile-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,189,57,.13);
+      border-radius: 15px;
+      font-size: 22px;
+    }
+
+    .profile-value {
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      margin-top: 3px;
+    }
+
+    .verified {
+      color: #9ce4a8;
+      font-size: 12px;
+      margin-top: 4px;
     }
 
     .categories {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 12px;
+      padding: 2px 0 10px;
+      scrollbar-width: none;
     }
 
+    .categories::-webkit-scrollbar { display: none; }
+
     .category {
-      flex: 0 0 auto;
-      padding: 10px 14px;
-      background: #202020;
-      color: white;
+      white-space: nowrap;
       border: 1px solid var(--border);
-      border-radius: 22px;
+      background: var(--surface);
+      color: #eee;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
     }
 
     .category.active {
-      background: var(--gold);
-      color: #111;
-      font-weight: bold;
-      border-color: var(--gold);
+      color: #171717;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 800;
     }
 
-    .menu {
+    .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 11px;
     }
 
     .product {
-      border-radius: 13px;
+      min-width: 0;
+      background: var(--surface);
       border: 1px solid var(--border);
-      overflow: hidden;
-      background: var(--card);
-    }
-
-    .product-image {
+      border-radius: 17px;
+      padding: 14px 12px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 95px;
-      background: linear-gradient(135deg, #352b16, #171717);
-      font-size: 43px;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .product-info { padding: 11px; }
+    .product-icon {
+      height: 65px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #30291d, #222);
+      font-size: 35px;
+    }
 
     .product-name {
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 750;
       min-height: 35px;
+      line-height: 1.3;
     }
 
     .product-price {
-      color: var(--gold);
-      font-weight: bold;
-      margin: 7px 0 10px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
     }
 
-    .quantity-row {
+    .product-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
+      gap: 5px;
+      margin-top: auto;
     }
 
-    .quantity-row button {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-      border: 1px solid #6b5519;
-      color: var(--gold);
-      background: #282214;
-      font-size: 18px;
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .quantity-row strong { font-size: 14px; }
-
-    .field { margin-bottom: 16px; }
-    .field:last-child { margin-bottom: 0; }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #444;
-      border-radius: 9px;
-      background: #121212;
+    .qty-control button {
+      width: 31px;
+      height: 31px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--surface2);
       color: white;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .qty-control button.plus {
+      background: var(--accent);
+      color: #171717;
+    }
+
+    .qty-number {
+      min-width: 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .field { margin-top: 14px; }
+    .field:first-child { margin-top: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      color: white;
+      background: #111;
+      border: 1px solid #3a3a3a;
+      border-radius: 12px;
+      padding: 13px;
       outline: none;
     }
 
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--gold);
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
     }
 
-    .field textarea {
-      min-height: 76px;
+    textarea {
+      min-height: 82px;
       resize: vertical;
     }
 
-    .option-list {
+    select option { background: #191919; }
+
+    .choice-list {
       display: grid;
       gap: 9px;
     }
 
-    .option {
+    .choice {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 13px;
+      border: 1px solid #3a3a3a;
+      border-radius: 13px;
       background: #151515;
+      cursor: pointer;
+    }
+
+    .choice:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(255,189,57,.07);
+    }
+
+    .choice input {
+      width: 17px;
+      height: 17px;
+      margin: 2px 0 0;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .choice-title { font-size: 14px; font-weight: 800; }
+    .choice-desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .payment-details {
+      border: 1px dashed #5c512f;
+      background: rgba(255,189,57,.06);
+      border-radius: 13px;
+      padding: 13px;
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .payment-details strong { color: var(--accent); }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      color: #dedede;
       font-size: 14px;
     }
 
-    .option input,
-    .check-row input {
-      accent-color: var(--gold);
+    .summary-line span:last-child {
+      text-align: right;
+      overflow-wrap: anywhere;
     }
 
-    .primary-button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 10px;
-      background: var(--gold);
-      color: #111;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .secondary-button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: 1px solid #665019;
-      border-radius: 9px;
-      background: #262115;
-      color: var(--gold);
-      font-weight: bold;
-    }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .notice {
-      padding: 12px;
-      margin-top: 12px;
-      background: #2a2416;
-      color: #ffdf8a;
-      border-radius: 9px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .check-row {
-      display: flex;
-      gap: 9px;
-      align-items: flex-start;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .total-line {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 14px;
-      margin-top: 14px;
+    .summary-line.total {
       border-top: 1px solid var(--border);
-      color: var(--gold);
-      font-size: 19px;
-      font-weight: bold;
+      margin-top: 7px;
+      padding-top: 15px;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--accent);
     }
+
+    .summary-items {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 5px;
+    }
+
+    .primary-btn, .secondary-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 13px;
+      padding: 15px;
+      font-weight: 900;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: #151515;
+      margin-top: 15px;
+    }
+
+    .primary-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      margin-top: 10px;
+      background: var(--surface2);
+      color: white;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 28px 18px;
+    }
+
+    .success-icon { font-size: 54px; }
+    .success h2 { margin: 12px 0; }
+    .success p { color: var(--muted); line-height: 1.6; }
 
     .footer {
-      margin: 25px 0;
       text-align: center;
       color: #777;
       font-size: 12px;
-      line-height: 1.8;
+      padding: 25px 0 10px;
     }
 
-    .hidden { display: none !important; }
-
-    @media (max-width: 360px) {
-      .container { padding: 10px; }
-      .menu { gap: 8px; }
-      .product-info { padding: 8px; }
+    @media (min-width: 560px) {
+      .menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .app { padding: 22px; }
     }
   </style>
 </head>
 
 <body>
-<main class="container">
+<div class="app" id="mainApp">
 
   <header class="hero">
-    <div class="logo">SALSACOS</div>
-    <p>Fresh Food. Great Taste. Every Time.</p>
-    <div class="badge">📍 Adama, Ethiopia · Order Online</div>
+    <div class="brand">Salsacos Restaurant</div>
+    <h1>Good food.<br>Good mood. 🍔</h1>
+    <p>Choose your favorites and place your order in a few simple steps.</p>
   </header>
 
-  <section>
-    <h2>Our Menu</h2>
-    <div class="categories" id="categories">
-      <button class="category active" data-category="all">All</button>
-      <button class="category" data-category="food">Food</button>
-      <button class="category" data-category="sides">Sauces</button>
-      <button class="category" data-category="drinks">Drinks</button>
-      <button class="category" data-category="shakes">Shakes</button>
-      <button class="category" data-category="mocktails">Mocktails</button>
-      <button class="category" data-category="beer">Beer</button>
+  <!-- CUSTOMER DETAILS ARE SHOWN FIRST -->
+  <section class="section">
+    <div class="section-heading">
+      <h2>Your profile</h2>
+      <span class="subtext">Saved by the bot</span>
     </div>
-    <div class="menu" id="menu"></div>
-    <p class="muted">Choose your items and quantities, then submit your order below.</p>
+    <div class="profile-card">
+      <div class="profile-row">
+        <div class="avatar">👤</div>
+        <div>
+          <div class="subtext">Customer name</div>
+          <div class="profile-value" id="profileName">Telegram customer</div>
+          <div class="subtext" style="margin-top:8px">Phone number</div>
+          <div class="profile-value" id="profilePhone">Saved in your bot</div>
+          <div class="verified">✓ Customer details saved</div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Customer Information</h2>
-    <div class="section">
+  <!-- MENU -->
+  <section class="section">
+    <div class="section-heading">
+      <h2>Explore our menu</h2>
+      <span class="subtext" id="itemCount">0 items</span>
+    </div>
 
-      <div class="field">
-        <label for="customerName">Full Name *</label>
-        <input id="customerName" type="text"
-          placeholder="Enter your full name" autocomplete="name" required>
-      </div>
+    <div class="categories" id="categories"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
 
-      <div class="field">
-        <label for="phone">Phone Number *</label>
-        <input id="phone" type="tel"
-          placeholder="09XXXXXXXX" autocomplete="tel" required>
-        <p class="muted">Enter a phone number the restaurant can reach.</p>
-      </div>
+  <!-- CHECKOUT DETAILS COME LAST -->
+  <section class="section" id="checkout">
+    <div class="section-heading">
+      <h2>Delivery & payment</h2>
+      <span class="subtext">Final step</span>
+    </div>
 
+    <div class="panel">
       <div class="field">
-        <label>Order Type *</label>
-        <div class="option-list">
-          <label class="option">
+        <label>Order type</label>
+        <div class="choice-list">
+          <label class="choice">
             <input type="radio" name="orderType" value="delivery" checked>
-            <span>🛵 Delivery (+50 ETB)</span>
+            <span>
+              <span class="choice-title">🛵 Delivery</span>
+              <span class="choice-desc">Delivery fee: 50 ETB</span>
+            </span>
           </label>
-          <label class="option">
+          <label class="choice">
             <input type="radio" name="orderType" value="pickup">
-            <span>🛍️ Pickup</span>
+            <span>
+              <span class="choice-title">🥡 Pickup</span>
+              <span class="choice-desc">Collect your order yourself</span>
+            </span>
           </label>
-          <label class="option">
+          <label class="choice">
             <input type="radio" name="orderType" value="dine_in">
-            <span>🍽️ Dine-in</span>
+            <span>
+              <span class="choice-title">🍽️ Dine-in</span>
+              <span class="choice-desc">Enjoy your order at the restaurant</span>
+            </span>
           </label>
         </div>
       </div>
 
       <div class="field" id="addressField">
-        <label for="address">Delivery Address *</label>
-        <textarea id="address"
-          placeholder="City, area, street, building, or nearby landmark"></textarea>
-        <p class="muted">GPS is optional. You can enter an address manually.</p>
-        <button class="secondary-button" type="button" id="locationButton">
-          Share Current Location (Optional)
+        <label for="address">Delivery address</label>
+        <textarea id="address" placeholder="Enter your city, area, building or nearby landmark"></textarea>
+        <button type="button" class="secondary-btn" id="locationBtn">
+          📍 Use my current location (optional)
         </button>
-        <p class="muted" id="locationStatus"></p>
+        <div class="hint" id="locationStatus">
+          You can type any delivery address. Location sharing is optional.
+        </div>
       </div>
 
       <div class="field">
-        <label for="notes">Additional Instructions (Optional)</label>
-        <textarea id="notes"
-          placeholder="Special requests or delivery directions"></textarea>
+        <label for="notes">Order notes (optional)</label>
+        <textarea id="notes" placeholder="Special instructions or delivery details"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Choose payment method</label>
+        <div class="choice-list">
+          <label class="choice">
+            <input type="radio" name="paymentType" value="telebirr" checked>
+            <span>
+              <span class="choice-title">📱 Telebirr</span>
+              <span class="choice-desc">Pay using Telebirr</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="paymentType" value="cbe">
+            <span>
+              <span class="choice-title">🏦 Commercial Bank of Ethiopia (CBE)</span>
+              <span class="choice-desc">Pay to the CBE account</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="paymentType" value="cash">
+            <span>
+              <span class="choice-title">💵 Cash</span>
+              <span class="choice-desc">Pay in cash when applicable</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="payment-details" id="paymentDetails"></div>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>Payment Method</h2>
-    <div class="section">
-      <div class="option-list">
-        <label class="option">
-          <input type="radio" name="paymentType" value="telebirr" checked>
-          <span>📱 Telebirr — 0907490883</span>
-        </label>
-        <label class="option">
-          <input type="radio" name="paymentType" value="cbe">
-          <span>🏦 CBE — 1000539408872</span>
-        </label>
-        <label class="option">
-          <input type="radio" name="paymentType" value="cash">
-          <span>💵 Cash Payment</span>
-        </label>
-      </div>
-
-      <div class="notice" id="paymentNotice">
-        Telebirr: 0907490883. Follow the payment instructions in your
-        order confirmation. Payment is confirmed by the restaurant.
-      </div>
+  <!-- FINAL ORDER SUMMARY -->
+  <section class="section">
+    <div class="section-heading">
+      <h2>Order summary</h2>
+      <span class="subtext">Review before sending</span>
     </div>
-  </section>
 
-  <section id="ageSection" class="hidden">
-    <h2>Age Confirmation</h2>
-    <div class="section">
-      <label class="check-row">
-        <input type="checkbox" id="ageConfirmed">
-        <span>I confirm that I meet the legal age requirements for purchasing alcoholic beverages.</span>
-      </label>
-    </div>
-  </section>
-
-  <section>
-    <h2>Order Summary</h2>
-    <div class="section">
-      <div id="summaryItems">
-        <p class="muted">Your selected items will appear here.</p>
+    <div class="panel">
+      <div id="summaryItems" class="summary-items">
+        <div class="subtext">Your selected items will appear here.</div>
       </div>
-      <div class="total-line">
-        <span>Estimated Total</span>
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <span id="subtotal">0 ETB</span>
+      </div>
+      <div class="summary-line">
+        <span>Delivery fee</span>
+        <span id="deliveryFee">50 ETB</span>
+      </div>
+      <div class="summary-line total">
+        <span>Total</span>
         <span id="total">0 ETB</span>
       </div>
-    </div>
-  </section>
 
-  <section>
-    <h2>Submit Your Order</h2>
-    <div class="section">
-      <label class="check-row">
-        <input type="checkbox" id="confirmDetails">
-        <span>I confirm that my order and contact details are correct.</span>
-      </label>
+      <div class="error" id="errorMessage"></div>
 
-      <button class="primary-button" id="placeOrder" type="button">
-        Submit Order
+      <button class="primary-btn" id="submitBtn">
+        Confirm & send order
       </button>
-
-      <p class="muted">
-        After submission, the Salsacos bot will send you a confirmation
-        and unique order code. Your order will also be forwarded to
-        the restaurant's Telegram channel.
-      </p>
+      <div class="hint">
+        Your order will be sent to Salsacos. You will receive a private
+        confirmation message from the bot with your unique order code.
+        Bank and Telebirr payments are checked by the Salsacos team.
+      </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <strong>Salsacos</strong><br>
-    Customer Service: @zilasun<br>
-    Orders Channel: @salsacos
-  </footer>
+  <div class="footer">Salsacos · Thank you for ordering with us ❤️</div>
+</div>
 
-</main>
+<div class="app success" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h2>Order submitted</h2>
+  <p>
+    Your order has been sent through Telegram.<br>
+    Please return to the bot to see your order confirmation and payment
+    instructions.
+  </p>
+  <button class="primary-btn" id="backToBot">Return to Telegram</button>
+</div>
 
 <script>
-  const tg = window.Telegram && window.Telegram.WebApp;
+(() => {
+  "use strict";
 
+  const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
   }
 
-  const MENU = [
-    {id:"tacos", name:"Tacos", price:250, category:"food", emoji:"🌮"},
-    {id:"special_tacos", name:"Special Tacos", price:300, category:"food", emoji:"🌮"},
-    {id:"wrap", name:"Wrap", price:200, category:"food", emoji:"🌯"},
-    {id:"special_wrap", name:"Special Wrap", price:250, category:"food", emoji:"🌯"},
+  const params = new URLSearchParams(window.location.search);
 
-    {id:"ketchup", name:"Ketchup", price:40, category:"sides", emoji:"🍅"},
-    {id:"mayonnaise", name:"Mayonnaise", price:40, category:"sides", emoji:"🥣"},
-    {id:"salsacos_sauce", name:"Salsacos Sauce", price:50, category:"sides", emoji:"🌶️"},
+  // The bot supplies these details after the customer shares their
+  // contact. Telegram's WebApp profile alone does not contain phone.
+  const customerName = params.get("customer_name") || tg?.initDataUnsafe?.user?.first_name || "Customer";
+  const customerPhone = params.get("customer_phone") || "";
 
-    {id:"coca_cola", name:"Coca-Cola", price:70, category:"drinks", emoji:"🥤"},
-    {id:"fanta", name:"Fanta", price:70, category:"drinks", emoji:"🧡"},
-    {id:"sprite", name:"Sprite", price:70, category:"drinks", emoji:"🥤"},
-    {id:"water", name:"Water", price:50, category:"drinks", emoji:"💧"},
+  document.getElementById("profileName").textContent = customerName;
+  document.getElementById("profilePhone").textContent =
+    customerPhone || "Open this app from the Salsacos bot";
 
-    {id:"milkshake", name:"Milkshake", price:350, category:"shakes", emoji:"🥛"},
-    {id:"strawberry_shake", name:"Strawberry Shake", price:350, category:"shakes", emoji:"🍓"},
+  const products = [
+    {id:"tacos", name:"Tacos", price:250, category:"Food", icon:"🌮"},
+    {id:"special_tacos", name:"Special Tacos", price:300, category:"Food", icon:"🌮"},
+    {id:"wrap", name:"Wrap", price:200, category:"Food", icon:"🌯"},
+    {id:"special_wrap", name:"Special Wrap", price:250, category:"Food", icon:"🌯"},
 
-    {id:"strawberry_mocktail", name:"Strawberry Mocktail", price:450, category:"mocktails", emoji:"🍹"},
-    {id:"mojito", name:"Mojito", price:450, category:"mocktails", emoji:"🍃"},
+    {id:"ketchup", name:"Ketchup", price:40, category:"Sauces", icon:"🍅"},
+    {id:"mayonnaise", name:"Mayonnaise", price:40, category:"Sauces", icon:"🥣"},
+    {id:"salsacos_sauce", name:"Salsacos Sauce", price:50, category:"Sauces", icon:"🌶️"},
 
-    {id:"dashen_beer", name:"Dashen Beer", price:120, category:"beer", emoji:"🍺", alcohol:true},
-    {id:"st_george_beer", name:"St. George Beer", price:120, category:"beer", emoji:"🍺", alcohol:true},
-    {id:"arada_beer", name:"Arada Beer", price:120, category:"beer", emoji:"🍺", alcohol:true}
+    {id:"coca_cola", name:"Coca-Cola", price:70, category:"Drinks", icon:"🥤"},
+    {id:"fanta", name:"Fanta", price:70, category:"Drinks", icon:"🍊"},
+    {id:"sprite", name:"Sprite", price:70, category:"Drinks", icon:"🥤"},
+    {id:"water", name:"Water", price:50, category:"Drinks", icon:"💧"},
+
+    {id:"milkshake", name:"Milkshake", price:350, category:"Shakes", icon:"🥛"},
+    {id:"strawberry_shake", name:"Strawberry Shake", price:350, category:"Shakes", icon:"🍓"},
+
+    {id:"strawberry_mocktail", name:"Strawberry Mocktail", price:450, category:"Mocktails", icon:"🍹"},
+    {id:"mojito", name:"Mojito", price:450, category:"Mocktails", icon:"🍃"},
+
+    {id:"dashen_beer", name:"Dashen Beer", price:120, category:"Beer", icon:"🍺"},
+    {id:"st_george_beer", name:"St. George Beer", price:120, category:"Beer", icon:"🍺"},
+    {id:"arada_beer", name:"Arada Beer", price:120, category:"Beer", icon:"🍺"}
   ];
 
   const quantities = {};
-  let activeCategory = "all";
-  let customerLocation = null;
-  let submitting = false;
+  products.forEach(p => quantities[p.id] = 0);
 
-  // Automatically fill the customer's name from their Telegram profile.
-  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-    const user = tg.initDataUnsafe.user;
-    const nameInput = document.getElementById("customerName");
+  const categoryNames = ["All", "Food", "Sauces", "Drinks", "Shakes", "Mocktails", "Beer"];
+  let activeCategory = "All";
+  let latitude = null;
+  let longitude = null;
 
-    if (!nameInput.value) {
-      nameInput.value = [
-        user.first_name,
-        user.last_name
-      ].filter(Boolean).join(" ");
-    }
+  const money = amount => `${amount.toLocaleString("en-US")} ETB`;
+
+  function selectedItems() {
+    return products
+      .filter(p => quantities[p.id] > 0)
+      .map(p => ({id:p.id, quantity:quantities[p.id]}));
   }
 
-  function money(value) {
-    return value.toLocaleString("en-US") + " ETB";
+  function subtotalAmount() {
+    return products.reduce((sum, p) => sum + p.price * quantities[p.id], 0);
   }
 
-  function getOrderType() {
-    return document.querySelector('input[name="orderType"]:checked').value;
+  function currentOrderType() {
+    return document.querySelector('input[name="orderType"]:checked')?.value || "delivery";
   }
 
-  function getPaymentType() {
-    return document.querySelector('input[name="paymentType"]:checked').value;
+  function currentPaymentType() {
+    return document.querySelector('input[name="paymentType"]:checked')?.value || "telebirr";
   }
 
-  function getSubtotal() {
-    return Object.entries(quantities).reduce((sum, [id, qty]) => {
-      const product = MENU.find(item => item.id === id);
-      return sum + (product ? product.price * qty : 0);
-    }, 0);
+  function deliveryFeeAmount() {
+    return currentOrderType() === "delivery" ? 50 : 0;
   }
 
-  function getDeliveryFee() {
-    return getOrderType() === "delivery" ? 50 : 0;
+  function totalAmount() {
+    return subtotalAmount() + deliveryFeeAmount();
   }
 
-  function getTotal() {
-    return getSubtotal() + getDeliveryFee();
+  function renderCategories() {
+    const holder = document.getElementById("categories");
+    holder.innerHTML = "";
+
+    categoryNames.forEach(category => {
+      const button = document.createElement("button");
+      button.className = "category" + (activeCategory === category ? " active" : "");
+      button.textContent = category;
+      button.type = "button";
+      button.addEventListener("click", () => {
+        activeCategory = category;
+        renderCategories();
+        renderProducts();
+      });
+      holder.appendChild(button);
+    });
   }
 
-  function renderMenu() {
-    const products = MENU.filter(item =>
-      activeCategory === "all" || item.category === activeCategory
+  function renderProducts() {
+    const grid = document.getElementById("menuGrid");
+    grid.innerHTML = "";
+
+    const shown = products.filter(p =>
+      activeCategory === "All" || p.category === activeCategory
     );
 
-    document.getElementById("menu").innerHTML = products.map(item => `
-      <article class="product">
-        <div class="product-image">${item.emoji}</div>
-        <div class="product-info">
-          <div class="product-name">${item.name}</div>
-          <div class="product-price">${money(item.price)}</div>
-          <div class="quantity-row">
-            <button type="button" data-minus="${item.id}" aria-label="Remove one">−</button>
-            <strong id="qty-${item.id}">${quantities[item.id] || 0}</strong>
-            <button type="button" data-plus="${item.id}" aria-label="Add one">+</button>
-          </div>
-        </div>
-      </article>
-    `).join("");
-  }
-
-  function renderSummary() {
-    const selected = Object.entries(quantities)
-      .filter(([, qty]) => qty > 0);
-
-    const summary = document.getElementById("summaryItems");
-
-    if (selected.length === 0) {
-      summary.innerHTML = '<p class="muted">Choose items from the menu above.</p>';
-    } else {
-      summary.innerHTML = selected.map(([id, qty]) => {
-        const item = MENU.find(p => p.id === id);
-        return `
-          <div style="display:flex;justify-content:space-between;gap:10px;margin:12px 0;font-size:14px">
-            <span>${item.name} × ${qty}</span>
-            <strong>${money(item.price * qty)}</strong>
-          </div>
-        `;
-      }).join("");
+    if (!shown.length) {
+      grid.innerHTML = '<div class="empty">No items in this category.</div>';
+      return;
     }
 
-    document.getElementById("total").textContent = money(getTotal());
-    updateAgeSection();
+    shown.forEach(product => {
+      const card = document.createElement("article");
+      card.className = "product";
+
+      const icon = document.createElement("div");
+      icon.className = "product-icon";
+      icon.textContent = product.icon;
+
+      const name = document.createElement("div");
+      name.className = "product-name";
+      name.textContent = product.name;
+
+      const price = document.createElement("div");
+      price.className = "product-price";
+      price.textContent = money(product.price);
+
+      const bottom = document.createElement("div");
+      bottom.className = "product-bottom";
+
+      const controls = document.createElement("div");
+      controls.className = "qty-control";
+
+      const minus = document.createElement("button");
+      minus.type = "button";
+      minus.textContent = "−";
+      minus.setAttribute("aria-label", `Remove one ${product.name}`);
+      minus.addEventListener("click", () => changeQuantity(product.id, -1));
+
+      const qty = document.createElement("span");
+      qty.className = "qty-number";
+      qty.id = `qty-${product.id}`;
+      qty.textContent = quantities[product.id];
+
+      const plus = document.createElement("button");
+      plus.type = "button";
+      plus.className = "plus";
+      plus.textContent = "+";
+      plus.setAttribute("aria-label", `Add one ${product.name}`);
+      plus.addEventListener("click", () => changeQuantity(product.id, 1));
+
+      controls.append(minus, qty, plus);
+      bottom.appendChild(controls);
+      card.append(icon, name, price, bottom);
+      grid.appendChild(card);
+    });
+
+    updateSummary();
   }
 
   function changeQuantity(id, change) {
-    if (!MENU.some(item => item.id === id)) return;
-
-    quantities[id] = Math.max(0, (quantities[id] || 0) + change);
-
-    if (quantities[id] === 0) delete quantities[id];
-
-    const quantityElement = document.getElementById("qty-" + id);
-    if (quantityElement) {
-      quantityElement.textContent = quantities[id] || 0;
-    }
-
-    renderSummary();
+    quantities[id] = Math.max(0, Math.min(50, quantities[id] + change));
+    const qty = document.getElementById(`qty-${id}`);
+    if (qty) qty.textContent = quantities[id];
+    updateSummary();
   }
 
-  function updateAgeSection() {
-    const containsAlcohol = Object.keys(quantities).some(id => {
-      const item = MENU.find(p => p.id === id);
-      return item && item.alcohol;
-    });
+  function updateSummary() {
+    const chosen = products.filter(p => quantities[p.id] > 0);
+    const holder = document.getElementById("summaryItems");
+    holder.innerHTML = "";
 
-    document.getElementById("ageSection")
-      .classList.toggle("hidden", !containsAlcohol);
+    if (!chosen.length) {
+      const empty = document.createElement("div");
+      empty.className = "subtext";
+      empty.textContent = "Your selected items will appear here.";
+      holder.appendChild(empty);
+    } else {
+      chosen.forEach(product => {
+        const row = document.createElement("div");
+        row.className = "summary-line";
 
-    if (!containsAlcohol) {
-      document.getElementById("ageConfirmed").checked = false;
+        const label = document.createElement("span");
+        label.textContent = `${product.name} × ${quantities[product.id]}`;
+
+        const price = document.createElement("span");
+        price.textContent = money(product.price * quantities[product.id]);
+
+        row.append(label, price);
+        holder.appendChild(row);
+      });
+    }
+
+    document.getElementById("itemCount").textContent =
+      `${selectedItems().reduce((n, item) => n + item.quantity, 0)} items`;
+
+    document.getElementById("subtotal").textContent = money(subtotalAmount());
+    document.getElementById("deliveryFee").textContent = money(deliveryFeeAmount());
+    document.getElementById("total").textContent = money(totalAmount());
+    updatePaymentDetails();
+  }
+
+  function updatePaymentDetails() {
+    const payment = currentPaymentType();
+    const details = document.getElementById("paymentDetails");
+
+    if (payment === "telebirr") {
+      details.innerHTML =
+        '<strong>Telebirr payment</strong><br>' +
+        'Number: <strong>0907490883</strong><br>' +
+        'After sending your order, pay and send your payment screenshot ' +
+        'to <strong>@zilasun</strong> with your order code.';
+    } else if (payment === "cbe") {
+      details.innerHTML =
+        '<strong>CBE payment</strong><br>' +
+        'Account number: <strong>1000539408872</strong><br>' +
+        'After sending your order, pay and send your payment screenshot ' +
+        'to <strong>@zilasun</strong> with your order code.';
+    } else {
+      details.textContent =
+        "Cash payment: prepare to pay in cash when your order is delivered or collected, where applicable.";
     }
   }
 
-  document.getElementById("categories").addEventListener("click", event => {
-    const button = event.target.closest("[data-category]");
-    if (!button) return;
-
-    activeCategory = button.dataset.category;
-
-    document.querySelectorAll(".category").forEach(element => {
-      element.classList.toggle("active", element === button);
-    });
-
-    renderMenu();
-  });
-
-  document.getElementById("menu").addEventListener("click", event => {
-    const plus = event.target.closest("[data-plus]");
-    const minus = event.target.closest("[data-minus]");
-
-    if (plus) changeQuantity(plus.dataset.plus, 1);
-    if (minus) changeQuantity(minus.dataset.minus, -1);
-  });
+  function updateOrderType() {
+    const isDelivery = currentOrderType() === "delivery";
+    document.getElementById("addressField").style.display = isDelivery ? "block" : "none";
+    updateSummary();
+  }
 
   document.querySelectorAll('input[name="orderType"]').forEach(input => {
-    input.addEventListener("change", () => {
-      document.getElementById("addressField")
-        .classList.toggle("hidden", getOrderType() !== "delivery");
-      renderSummary();
-    });
+    input.addEventListener("change", updateOrderType);
   });
 
   document.querySelectorAll('input[name="paymentType"]').forEach(input => {
-    input.addEventListener("change", () => {
-      const notices = {
-        telebirr: "Telebirr: 0907490883. Follow the instructions in your bot confirmation. Payment must be verified by the restaurant.",
-        cbe: "CBE account: 1000539408872. Include your order code as a reference when instructed. Payment must be verified by the restaurant.",
-        cash: "Cash selected. Follow the restaurant's instructions in your bot confirmation."
-      };
-
-      document.getElementById("paymentNotice").textContent =
-        notices[getPaymentType()];
-    });
+    input.addEventListener("change", updatePaymentDetails);
   });
 
-  document.getElementById("locationButton").addEventListener("click", () => {
+  document.getElementById("locationBtn").addEventListener("click", () => {
     const status = document.getElementById("locationStatus");
 
     if (!navigator.geolocation) {
-      status.textContent = "GPS is unavailable. You can enter your address manually.";
+      status.textContent = "Location is not available in this browser. Please type your address.";
       return;
     }
 
-    status.textContent = "Requesting location permission…";
+    status.textContent = "Requesting your location…";
 
     navigator.geolocation.getCurrentPosition(
       position => {
-        customerLocation = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        };
-        status.textContent = "Location captured. You can still edit your address.";
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+
+        const locationText = `GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+        const addressInput = document.getElementById("address");
+
+        if (!addressInput.value.trim()) {
+          addressInput.value = locationText;
+        } else if (!addressInput.value.includes("GPS:")) {
+          addressInput.value += "\n" + locationText;
+        }
+
+        status.textContent = "Location added. Please check your address before submitting.";
       },
       () => {
-        customerLocation = null;
-        status.textContent = "Location was not shared. You can still submit your order.";
+        status.textContent = "Location permission was not granted. You can enter your address manually.";
       },
-      {enableHighAccuracy:true, timeout:12000, maximumAge:60000}
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
     );
   });
 
-  document.getElementById("placeOrder").addEventListener("click", () => {
-    if (submitting) return;
+  document.getElementById("submitBtn").addEventListener("click", () => {
+    const error = document.getElementById("errorMessage");
+    error.style.display = "none";
 
-    const selected = Object.entries(quantities)
-      .filter(([, qty]) => qty > 0);
-
-    if (!selected.length) {
-      alert("Please select at least one menu item.");
+    if (!tg) {
+      error.textContent = "Please open this Mini App from the Salsacos Telegram bot.";
+      error.style.display = "block";
       return;
     }
 
-    const name = document.getElementById("customerName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+    if (!customerPhone) {
+      error.textContent = "Your saved phone number was not found. Please send /start to the Salsacos bot first.";
+      error.style.display = "block";
+      return;
+    }
+
+    const items = selectedItems();
+    if (!items.length) {
+      error.textContent = "Please select at least one menu item.";
+      error.style.display = "block";
+      return;
+    }
+
+    const orderType = currentOrderType();
     const address = document.getElementById("address").value.trim();
-    const notes = document.getElementById("notes").value.trim();
-    const type = getOrderType();
 
-    if (!name) {
-      alert("Please enter your full name.");
-      document.getElementById("customerName").focus();
-      return;
-    }
-
-    if (!phone || phone.replace(/\D/g, "").length < 9) {
-      alert("Please enter a valid phone number.");
-      document.getElementById("phone").focus();
-      return;
-    }
-
-    if (type === "delivery" && !address) {
-      alert("Please enter your delivery address. GPS is optional.");
+    if (orderType === "delivery" && !address) {
+      error.textContent = "Please enter your delivery address.";
+      error.style.display = "block";
       document.getElementById("address").focus();
       return;
     }
 
-    if (!document.getElementById("confirmDetails").checked) {
-      alert("Please confirm your order details.");
-      return;
-    }
-
-    const containsAlcohol = selected.some(([id]) => {
-      const item = MENU.find(p => p.id === id);
-      return item && item.alcohol;
-    });
-
-    if (containsAlcohol && !document.getElementById("ageConfirmed").checked) {
-      alert("Please confirm the legal age requirement.");
-      return;
-    }
-
-    if (!tg || !tg.initData) {
-      alert("Please open this Mini App through your Salsacos Telegram bot to submit an order.");
-      return;
-    }
-
     const payload = {
-      action: "new_order",
-      store: "Salsacos",
-      items: selected.map(([id, quantity]) => ({id, quantity})),
-      order_type: type,
-      payment_type: getPaymentType(),
-      name: name,
-      phone: phone,
-      address: type === "delivery" ? address : "",
-      notes: notes,
-      subtotal: getSubtotal(),
-      delivery_fee: getDeliveryFee(),
-      total: getTotal(),
-      age_confirmed: containsAlcohol &&
-        document.getElementById("ageConfirmed").checked,
-      latitude: customerLocation ? customerLocation.latitude : null,
-      longitude: customerLocation ? customerLocation.longitude : null
+      items,
+      order_type: orderType,
+      payment_type: currentPaymentType(),
+      address,
+      notes: document.getElementById("notes").value.trim(),
+      latitude,
+      longitude
     };
 
+    const submitButton = document.getElementById("submitBtn");
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending order…";
+
     try {
-      submitting = true;
-
-      const button = document.getElementById("placeOrder");
-      button.disabled = true;
-      button.textContent = "Submitting…";
-
+      // The bot receives this data via WEB_APP_DATA.
+      // Prices and totals are recalculated by the Python server.
       tg.sendData(JSON.stringify(payload));
 
-      /*
-       * The Python bot must:
-       * 1. Receive WEB_APP_DATA.
-       * 2. Validate item IDs, quantities and prices.
-       * 3. Generate a unique order code.
-       * 4. Send a confirmation to the customer.
-       * 5. Forward the order to @salsacos.
-       */
-    } catch (error) {
-      submitting = false;
-
-      const button = document.getElementById("placeOrder");
-      button.disabled = false;
-      button.textContent = "Submit Order";
-
-      alert("Submission failed. Please reopen the Mini App and try again.");
+      document.getElementById("mainApp").style.display = "none";
+      document.getElementById("successScreen").style.display = "block";
+    } catch (e) {
+      submitButton.disabled = false;
+      submitButton.textContent = "Confirm & send order";
+      error.textContent = "Could not send the order. Please reopen the app and try again.";
+      error.style.display = "block";
     }
   });
 
-  renderMenu();
-  renderSummary();
+  document.getElementById("backToBot").addEventListener("click", () => {
+    if (tg) tg.close();
+  });
+
+  renderCategories();
+  renderProducts();
+  updateOrderType();
+})();
 </script>
 </body>
 </html>
