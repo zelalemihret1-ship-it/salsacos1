@@ -1,627 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#151515">
-<title>Salsacos | Order Online</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ambar Furniture Orders</title>
 
-<style>
-:root {
-  --bg:#111;
-  --panel:#1d1d1d;
-  --panel2:#292929;
-  --text:#fff;
-  --muted:#b9b9b9;
-  --accent:#ffbd39;
-  --border:#383838;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-button,input,textarea { font:inherit; }
-button { cursor:pointer; }
-.app { max-width:720px; margin:auto; padding:16px; }
-.hero {
-  padding:24px 20px;
-  border-radius:22px;
-  background:linear-gradient(135deg,#302619,#191919 70%);
-  border:1px solid #514025;
-  margin-bottom:20px;
-}
-.brand {
-  color:var(--accent);
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:2px;
-}
-h1 { margin:10px 0 7px; font-size:32px; }
-h2 { margin:0; font-size:21px; }
-p { line-height:1.5; }
-.muted { color:var(--muted); font-size:13px; line-height:1.5; }
-.step-title { margin:20px 0 12px; }
-.categories {
-  display:flex; gap:8px; overflow-x:auto; padding:3px 0 12px;
-}
-.category {
-  white-space:nowrap; border:1px solid var(--border);
-  border-radius:30px; background:var(--panel); color:white;
-  padding:10px 14px;
-}
-.category.active {
-  background:var(--accent); color:#171717;
-  border-color:var(--accent); font-weight:bold;
-}
-.menu-grid {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px;
-}
-.product {
-  background:var(--panel); border:1px solid var(--border);
-  border-radius:16px; padding:12px; display:flex; flex-direction:column;
-  gap:10px; min-width:0;
-}
-.product-icon {
-  height:62px; display:grid; place-items:center;
-  border-radius:12px; background:#30291f; font-size:34px;
-}
-.product-name { font-weight:800; font-size:14px; min-height:34px; }
-.price { color:var(--accent); font-weight:bold; font-size:14px; }
-.product-bottom {
-  display:flex; justify-content:space-between; align-items:center; gap:5px;
-  margin-top:auto;
-}
-.qty { display:flex; align-items:center; gap:7px; }
-.qty button {
-  width:30px; height:30px; border:0; border-radius:9px;
-  background:var(--panel2); color:white; font-size:19px;
-}
-.qty .plus { background:var(--accent); color:#111; }
-.qty span { min-width:12px; text-align:center; font-weight:bold; }
-.panel {
-  background:var(--panel); border:1px solid var(--border);
-  border-radius:18px; padding:16px;
-}
-.field { margin-bottom:15px; }
-label { display:block; font-size:13px; font-weight:bold; margin-bottom:8px; }
-input,textarea {
-  width:100%; padding:13px; border-radius:11px;
-  border:1px solid #414141; background:#111; color:white; outline:none;
-}
-input:focus,textarea:focus { border-color:var(--accent); }
-textarea { resize:vertical; min-height:75px; }
-.choice {
-  display:flex; gap:10px; align-items:flex-start;
-  border:1px solid var(--border); border-radius:12px;
-  padding:13px; margin-bottom:9px; background:#151515;
-}
-.choice input {
-  width:17px; height:17px; margin:2px 0 0;
-  accent-color:var(--accent); flex-shrink:0;
-}
-.choice strong { display:block; font-size:14px; }
-.choice small { display:block; color:var(--muted); margin-top:4px; line-height:1.4; }
-.payment-info {
-  background:#282216; border:1px dashed #68532a;
-  padding:12px; border-radius:12px; font-size:13px;
-  line-height:1.7; margin-top:10px;
-}
-.payment-info strong { color:var(--accent); }
-.summary-row {
-  display:flex; justify-content:space-between; gap:12px;
-  padding:9px 0; font-size:14px;
-}
-.summary-row span:last-child { text-align:right; }
-.summary-total {
-  border-top:1px solid var(--border); margin-top:7px; padding-top:14px;
-  color:var(--accent); font-size:19px; font-weight:900;
-}
-.btn {
-  width:100%; padding:15px; border:0; border-radius:12px;
-  font-weight:900; margin-top:12px;
-}
-.primary { background:var(--accent); color:#151515; }
-.secondary { background:var(--panel2); color:white; }
-.btn:disabled { opacity:.6; cursor:wait; }
-.hint { color:var(--muted); font-size:12px; line-height:1.6; margin-top:10px; }
-.error { display:none; color:#ff8888; font-size:13px; line-height:1.5; margin-top:12px; }
-.hidden { display:none !important; }
-.footer { text-align:center; color:#777; font-size:12px; padding:24px 0; }
-@media(min-width:560px) {
-  .menu-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-}
-</style>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --accent: #168b60;
+      --bg: var(--tg-theme-bg-color, #ffffff);
+      --text: var(--tg-theme-text-color, #222222);
+      --panel: var(--tg-theme-secondary-bg-color, #f3f5f4);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 10px 0 22px;
+    }
+
+    .logo {
+      font-size: 42px;
+    }
+
+    h1 { margin: 8px 0; }
+
+    .subtitle {
+      opacity: .7;
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 14px 0 7px;
+    }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #9995;
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .location-btn {
+      margin-top: 10px;
+      background: #536779;
+    }
+
+    #message {
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: none;
+      overflow-wrap: anywhere;
+    }
+
+    .success { background: #d8f5e5; color: #145b35; }
+    .error { background: #ffe0e0; color: #8a2020; }
+
+    .note {
+      font-size: 12px;
+      opacity: .7;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 
 <body>
-<main class="app">
-  <header class="hero">
-    <div class="brand">SALSACOS RESTAURANT</div>
-    <h1>Order your favorites 🍽️</h1>
-    <p class="muted">Choose your food first, then complete delivery and payment.</p>
+<div class="container">
+
+  <header class="header">
+    <div class="logo">🪑</div>
+    <h1>Ambar Furniture</h1>
+    <div class="subtitle">Quality furniture. Convenient ordering.</div>
   </header>
 
-  <!-- STEP ONE: ONLY THE MENU -->
-  <section id="menuStep">
-    <div class="step-title">
-      <h2>Choose your food</h2>
-      <p class="muted">Select your items and quantities, then continue.</p>
-    </div>
+  <div id="message" role="status" aria-live="polite"></div>
 
-    <div class="categories" id="categories"></div>
-    <div class="menu-grid" id="menuGrid"></div>
+  <form id="orderForm">
+    <section class="card">
+      <h3>📦 Your Order</h3>
 
-    <div class="panel" style="margin-top:18px">
-      <div class="summary-row">
-        <span>Selected items</span><strong id="itemCount">0</strong>
+      <label for="product">Select product</label>
+      <select id="product" required>
+        <option value="">Choose a product</option>
+        <option value="Shoe Shelf">Shoe Shelf</option>
+        <option value="TV Stand">TV Stand</option>
+        <option value="Wardrobe">Wardrobe</option>
+        <option value="Table">Table</option>
+        <option value="Chair">Chair</option>
+        <option value="Custom Furniture">Custom Furniture</option>
+      </select>
+
+      <label for="quantity">Quantity</label>
+      <input id="quantity" type="number" min="1" max="100"
+             value="1" required>
+
+      <label for="details">Product details / size</label>
+      <textarea id="details"
+        placeholder="Enter preferred size, color or other requirements"></textarea>
+
+      <div class="total">
+        <span>Estimated total</span>
+        <span id="total">Price on request</span>
       </div>
-      <div class="summary-row">
-        <span>Subtotal</span><strong id="menuSubtotal">0 ETB</strong>
-      </div>
-      <div class="error" id="menuError"></div>
-      <button type="button" class="btn primary" id="continueBtn">
-        Continue to delivery & payment →
+
+      <p class="note">
+        Final prices are confirmed by Ambar Furniture. The backend must
+        calculate the authoritative price before accepting an order.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>👤 Customer Information</h3>
+
+      <label for="name">Full name</label>
+      <input id="name" autocomplete="name" required
+             placeholder="Your full name">
+
+      <label for="phone">Phone number</label>
+      <input id="phone" type="tel" autocomplete="tel"
+             required placeholder="09XXXXXXXX">
+
+      <label for="address">Delivery address</label>
+      <textarea id="address" required
+        placeholder="City, area, street or nearby landmark"></textarea>
+
+      <button type="button" class="location-btn" id="locationBtn">
+        📍 Share my location
       </button>
-    </div>
-  </section>
 
-  <!-- STEP TWO: ALL OTHER DETAILS APPEAR HERE -->
-  <section id="checkoutStep" class="hidden">
-    <div class="step-title">
-      <h2>Complete your order</h2>
-      <p class="muted">Your details are filled in automatically. Edit them if needed.</p>
-    </div>
+      <p id="locationStatus" class="note"></p>
+    </section>
 
-    <div class="panel">
-      <h2 style="font-size:17px;margin-bottom:15px">Customer information</h2>
+    <section class="card">
+      <h3>💳 Payment</h3>
 
-      <div class="field">
-        <label for="customerName">Full name</label>
-        <input id="customerName" type="text" autocomplete="name"
-               maxlength="100" placeholder="Enter your name" required>
-      </div>
+      <label for="payment">Preferred payment method</label>
+      <select id="payment" required>
+        <option value="">Select payment method</option>
+        <option value="Telebirr">Telebirr</option>
+        <option value="CBE Birr">CBE Birr</option>
+        <option value="Bank Transfer">Bank transfer</option>
+        <option value="Confirm with admin">Confirm with admin</option>
+      </select>
 
-      <div class="field">
-        <label for="customerPhone">Phone number</label>
-        <input id="customerPhone" type="tel" autocomplete="tel"
-               maxlength="25" placeholder="Enter your phone number" required>
-        <div class="hint">Your updated name and number will be saved for future orders.</div>
-      </div>
+      <p class="note">
+        Submitting this form requests an order. It does not confirm payment.
+      </p>
+    </section>
 
-      <h2 style="font-size:17px;margin:22px 0 14px">Delivery option</h2>
+    <button id="submitBtn" type="submit">
+      ✅ Submit Order
+    </button>
+  </form>
 
-      <label class="choice">
-        <input type="radio" name="orderType" value="delivery" checked>
-        <span><strong>🛵 Delivery</strong><small>Delivery fee: 50 ETB</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="orderType" value="pickup">
-        <span><strong>🥡 Pickup</strong><small>Collect your order yourself.</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="orderType" value="dine_in">
-        <span><strong>🍽️ Dine-in</strong><small>Enjoy your order at the restaurant.</small></span>
-      </label>
-
-      <div class="field" id="addressField" style="margin-top:15px">
-        <label for="address">Delivery address</label>
-        <textarea id="address" maxlength="500"
-                  placeholder="City, area, building or nearby landmark"></textarea>
-        <button type="button" class="btn secondary" id="locationBtn">
-          📍 Use my current location (optional)
-        </button>
-        <div class="hint" id="locationStatus">
-          Enter any delivery address. GPS is optional.
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="notes">Additional instructions (optional)</label>
-        <textarea id="notes" maxlength="500"
-                  placeholder="Delivery directions or special requests"></textarea>
-      </div>
-
-      <h2 style="font-size:17px;margin:22px 0 14px">Payment method</h2>
-
-      <label class="choice">
-        <input type="radio" name="paymentType" value="telebirr" checked>
-        <span><strong>📱 Telebirr</strong><small>Pay using Telebirr.</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="paymentType" value="cbe">
-        <span><strong>🏦 CBE</strong><small>Commercial Bank of Ethiopia account.</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="paymentType" value="cash">
-        <span><strong>💵 Cash</strong><small>Cash payment where applicable.</small></span>
-      </label>
-
-      <div class="payment-info" id="paymentInfo"></div>
-    </div>
-
-    <div class="panel" style="margin-top:15px">
-      <h2 style="font-size:17px;margin-bottom:10px">Review order</h2>
-      <div id="checkoutItems"></div>
-      <div class="summary-row">
-        <span>Subtotal</span><span id="checkoutSubtotal">0 ETB</span>
-      </div>
-      <div class="summary-row">
-        <span>Delivery fee</span><span id="deliveryFee">50 ETB</span>
-      </div>
-      <div class="summary-row summary-total">
-        <span>Total</span><span id="checkoutTotal">0 ETB</span>
-      </div>
-
-      <div class="error" id="checkoutError"></div>
-      <button type="button" class="btn primary" id="submitBtn">Submit Order</button>
-      <button type="button" class="btn secondary" id="backBtn">← Back to menu</button>
-
-      <div class="hint">
-        Your order is sent to Salsacos. The bot sends a private confirmation
-        with your unique order code. Telebirr and CBE payments require verification.
-      </div>
-    </div>
-  </section>
-
-  <div class="footer">Salsacos · Thank you for ordering with us ❤️</div>
-</main>
+  <p class="note" style="text-align:center;margin-top:18px">
+    Thank you for choosing Ambar Furniture!
+  </p>
+</div>
 
 <script>
-(() => {
-  "use strict";
-
   const tg = window.Telegram?.WebApp;
+
   if (tg) {
     tg.ready();
     tg.expand();
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const telegramUser = tg?.initDataUnsafe?.user || {};
+  /*
+   * IMPORTANT:
+   * Replace this URL with your deployed HTTPS Python backend endpoint.
+   * Do not put your Telegram bot token in this HTML file.
+   */
+  const API_URL = "https://YOUR-DOMAIN.COM/api/orders";
 
-  const initialName =
-    params.get("customer_name") || telegramUser.first_name || "";
-  const initialPhone = params.get("customer_phone") || "";
+  /*
+   * Replace these example values with actual prices, or leave them null
+   * until you configure your product catalog.
+   * The server must always recalculate prices independently.
+   */
+  const PRODUCTS = {
+    "Shoe Shelf": null,
+    "TV Stand": null,
+    "Wardrobe": null,
+    "Table": null,
+    "Chair": null,
+    "Custom Furniture": null
+  };
 
-  document.getElementById("customerName").value = initialName;
-  document.getElementById("customerPhone").value = initialPhone;
-
-  const products = [
-    {id:"tacos",name:"Tacos",price:250,category:"Food",icon:"🌮"},
-    {id:"special_tacos",name:"Special Tacos",price:300,category:"Food",icon:"🌮"},
-    {id:"wrap",name:"Wrap",price:200,category:"Food",icon:"🌯"},
-    {id:"special_wrap",name:"Special Wrap",price:250,category:"Food",icon:"🌯"},
-    {id:"ketchup",name:"Ketchup",price:40,category:"Sauces",icon:"🍅"},
-    {id:"mayonnaise",name:"Mayonnaise",price:40,category:"Sauces",icon:"🥣"},
-    {id:"salsacos_sauce",name:"Salsacos Sauce",price:50,category:"Sauces",icon:"🌶️"},
-    {id:"coca_cola",name:"Coca-Cola",price:70,category:"Drinks",icon:"🥤"},
-    {id:"fanta",name:"Fanta",price:70,category:"Drinks",icon:"🍊"},
-    {id:"sprite",name:"Sprite",price:70,category:"Drinks",icon:"🥤"},
-    {id:"water",name:"Water",price:50,category:"Drinks",icon:"💧"},
-    {id:"milkshake",name:"Milkshake",price:350,category:"Shakes",icon:"🥛"},
-    {id:"strawberry_shake",name:"Strawberry Shake",price:350,category:"Shakes",icon:"🍓"},
-    {id:"strawberry_mocktail",name:"Strawberry Mocktail",price:450,category:"Mocktails",icon:"🍹"},
-    {id:"mojito",name:"Mojito",price:450,category:"Mocktails",icon:"🍃"},
-    {id:"dashen_beer",name:"Dashen Beer",price:120,category:"Beer",icon:"🍺"},
-    {id:"st_george_beer",name:"St. George Beer",price:120,category:"Beer",icon:"🍺"},
-    {id:"arada_beer",name:"Arada Beer",price:120,category:"Beer",icon:"🍺"}
-  ];
-
-  const quantities = Object.fromEntries(products.map(p => [p.id, 0]));
-  const categoryList = ["All","Food","Sauces","Drinks","Shakes","Mocktails","Beer"];
-
-  let activeCategory = "All";
-  let latitude = null;
-  let longitude = null;
+  let locationData = null;
   let submitting = false;
 
-  const money = n => `${n.toLocaleString("en-US")} ETB`;
-  const selected = () => products.filter(p => quantities[p.id] > 0);
-  const subtotal = () => products.reduce(
-    (sum, p) => sum + p.price * quantities[p.id], 0
-  );
-  const getOrderType = () =>
-    document.querySelector('[name="orderType"]:checked').value;
-  const getPaymentType = () =>
-    document.querySelector('[name="paymentType"]:checked').value;
-  const deliveryFee = () => getOrderType() === "delivery" ? 50 : 0;
-  const total = () => subtotal() + deliveryFee();
+  const form = document.getElementById("orderForm");
+  const productEl = document.getElementById("product");
+  const quantityEl = document.getElementById("quantity");
+  const totalEl = document.getElementById("total");
+  const submitBtn = document.getElementById("submitBtn");
+  const messageEl = document.getElementById("message");
 
-  function showError(id, message) {
-    const el = document.getElementById(id);
-    el.textContent = message;
-    el.style.display = "block";
+  function updateTotal() {
+    const price = PRODUCTS[productEl.value];
+    const quantity = Number(quantityEl.value);
+
+    totalEl.textContent =
+      price == null || !Number.isInteger(quantity) || quantity < 1
+        ? "Price on request"
+        : (price * quantity).toLocaleString() + " ETB";
   }
 
-  function clearError(id) {
-    const el = document.getElementById(id);
-    el.textContent = "";
-    el.style.display = "none";
+  productEl.addEventListener("change", updateTotal);
+  quantityEl.addEventListener("input", updateTotal);
+
+  function showMessage(text, type) {
+    messageEl.textContent = text;
+    messageEl.className = type;
+    messageEl.style.display = "block";
+    messageEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
-
-  function renderCategories() {
-    const root = document.getElementById("categories");
-    root.replaceChildren();
-
-    categoryList.forEach(category => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className =
-        "category" + (activeCategory === category ? " active" : "");
-      button.textContent = category;
-      button.addEventListener("click", () => {
-        activeCategory = category;
-        renderCategories();
-        renderProducts();
-      });
-      root.appendChild(button);
-    });
-  }
-
-  function renderProducts() {
-    const root = document.getElementById("menuGrid");
-    root.replaceChildren();
-
-    products
-      .filter(p => activeCategory === "All" || p.category === activeCategory)
-      .forEach(p => {
-        const card = document.createElement("article");
-        card.className = "product";
-
-        const icon = document.createElement("div");
-        icon.className = "product-icon";
-        icon.textContent = p.icon;
-
-        const name = document.createElement("div");
-        name.className = "product-name";
-        name.textContent = p.name;
-
-        const price = document.createElement("div");
-        price.className = "price";
-        price.textContent = money(p.price);
-
-        const bottom = document.createElement("div");
-        bottom.className = "product-bottom";
-
-        const controls = document.createElement("div");
-        controls.className = "qty";
-
-        const minus = document.createElement("button");
-        minus.type = "button";
-        minus.textContent = "−";
-        minus.setAttribute("aria-label", "Remove one " + p.name);
-        minus.addEventListener("click", () => changeQuantity(p.id, -1));
-
-        const number = document.createElement("span");
-        number.id = "qty-" + p.id;
-        number.textContent = quantities[p.id];
-
-        const plus = document.createElement("button");
-        plus.type = "button";
-        plus.className = "plus";
-        plus.textContent = "+";
-        plus.setAttribute("aria-label", "Add one " + p.name);
-        plus.addEventListener("click", () => changeQuantity(p.id, 1));
-
-        controls.append(minus, number, plus);
-        bottom.appendChild(controls);
-        card.append(icon, name, price, bottom);
-        root.appendChild(card);
-      });
-
-    updateSummary();
-  }
-
-  function changeQuantity(id, amount) {
-    quantities[id] = Math.max(0, Math.min(50, quantities[id] + amount));
-    const number = document.getElementById("qty-" + id);
-    if (number) number.textContent = quantities[id];
-    updateSummary();
-  }
-
-  function updateSummary() {
-    const count = selected().reduce((n, p) => n + quantities[p.id], 0);
-    document.getElementById("itemCount").textContent = count;
-    document.getElementById("menuSubtotal").textContent = money(subtotal());
-
-    const holder = document.getElementById("checkoutItems");
-    holder.replaceChildren();
-
-    if (!selected().length) {
-      const empty = document.createElement("p");
-      empty.className = "muted";
-      empty.textContent = "No items selected.";
-      holder.appendChild(empty);
-    } else {
-      selected().forEach(p => {
-        const row = document.createElement("div");
-        row.className = "summary-row";
-
-        const label = document.createElement("span");
-        label.textContent = `${p.name} × ${quantities[p.id]}`;
-
-        const price = document.createElement("span");
-        price.textContent = money(p.price * quantities[p.id]);
-
-        row.append(label, price);
-        holder.appendChild(row);
-      });
-    }
-
-    document.getElementById("checkoutSubtotal").textContent = money(subtotal());
-    document.getElementById("deliveryFee").textContent = money(deliveryFee());
-    document.getElementById("checkoutTotal").textContent = money(total());
-
-    updatePaymentInfo();
-  }
-
-  function updatePaymentInfo() {
-    const box = document.getElementById("paymentInfo");
-    const method = getPaymentType();
-
-    if (method === "telebirr") {
-      box.innerHTML =
-        "<strong>Telebirr payment</strong><br>" +
-        "Number: <strong>0907490883</strong><br>" +
-        "After submitting, follow the bot confirmation and send your payment " +
-        "screenshot to <strong>@zilasun</strong> with your order code.";
-    } else if (method === "cbe") {
-      box.innerHTML =
-        "<strong>CBE payment</strong><br>" +
-        "Account number: <strong>1000539408872</strong><br>" +
-        "After submitting, follow the bot confirmation and send your payment " +
-        "screenshot to <strong>@zilasun</strong> with your order code.";
-    } else {
-      box.textContent =
-        "Cash payment: prepare to pay when your order is delivered or collected, where applicable.";
-    }
-  }
-
-  document.getElementById("continueBtn").addEventListener("click", () => {
-    clearError("menuError");
-
-    if (!selected().length) {
-      showError("menuError", "Please select at least one item before continuing.");
-      return;
-    }
-
-    document.getElementById("menuStep").classList.add("hidden");
-    document.getElementById("checkoutStep").classList.remove("hidden");
-    updateSummary();
-    window.scrollTo({top:0, behavior:"smooth"});
-  });
-
-  document.getElementById("backBtn").addEventListener("click", () => {
-    document.getElementById("checkoutStep").classList.add("hidden");
-    document.getElementById("menuStep").classList.remove("hidden");
-    window.scrollTo({top:0, behavior:"smooth"});
-  });
-
-  document.querySelectorAll('[name="orderType"]').forEach(el => {
-    el.addEventListener("change", () => {
-      document.getElementById("addressField").classList.toggle(
-        "hidden", getOrderType() !== "delivery"
-      );
-      updateSummary();
-    });
-  });
-
-  document.querySelectorAll('[name="paymentType"]').forEach(el => {
-    el.addEventListener("change", updatePaymentInfo);
-  });
 
   document.getElementById("locationBtn").addEventListener("click", () => {
-    const status = document.getElementById("locationStatus");
-
     if (!navigator.geolocation) {
-      status.textContent = "Location is unavailable. Please type your address.";
+      showMessage("Location sharing is not supported by this device.", "error");
       return;
     }
 
-    status.textContent = "Requesting location permission…";
+    document.getElementById("locationStatus").textContent =
+      "Requesting location permission...";
 
     navigator.geolocation.getCurrentPosition(
       position => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
+        locationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
 
-        const gps = `GPS coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-        const field = document.getElementById("address");
-
-        if (!field.value.trim()) {
-          field.value = gps;
-        } else if (!field.value.includes("GPS coordinates:")) {
-          field.value += "\n" + gps;
-        }
-
-        status.textContent = "Location added. Please check the address before submitting.";
+        document.getElementById("locationStatus").textContent =
+          "✅ Location captured successfully.";
       },
-      () => {
-        status.textContent =
-          "Location permission denied or unavailable. You can type your address.";
+      error => {
+        document.getElementById("locationStatus").textContent =
+          "Location unavailable. Please enter your delivery address manually.";
       },
-      {enableHighAccuracy:true, timeout:10000, maximumAge:60000}
+      { enableHighAccuracy: true, timeout: 15000 }
     );
   });
 
-  document.getElementById("submitBtn").addEventListener("click", () => {
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
     if (submitting) return;
-    clearError("checkoutError");
 
-    if (!tg) {
-      showError("checkoutError", "Please open this app from the Salsacos Telegram bot.");
+    if (!tg || !tg.initData) {
+      showMessage(
+        "Please open this ordering page from your Telegram bot Mini App.",
+        "error"
+      );
       return;
     }
 
-    const name = document.getElementById("customerName").value.trim();
-    const phone = document.getElementById("customerPhone").value.trim();
-    const address = document.getElementById("address").value.trim();
-
-    if (!name || name.length > 100) {
-      showError("checkoutError", "Please enter your name (100 characters or fewer).");
-      document.getElementById("customerName").focus();
+    if (API_URL.includes("YOUR-DOMAIN.COM")) {
+      showMessage(
+        "The Python backend URL is not configured yet. Contact the administrator.",
+        "error"
+      );
       return;
     }
 
-    const phoneDigits = phone.replace(/\D/g, "");
-    if (phone.length > 25 || phoneDigits.length < 7) {
-      showError("checkoutError", "Please enter a valid phone number.");
-      document.getElementById("customerPhone").focus();
+    const product = productEl.value;
+    const quantity = Number(quantityEl.value);
+
+    if (!product || !Number.isInteger(quantity) ||
+        quantity < 1 || quantity > 100) {
+      showMessage("Please select a product and valid quantity.", "error");
       return;
     }
 
-    if (!selected().length) {
-      showError("checkoutError", "Please select at least one item.");
-      return;
-    }
+    const order = {
+      product,
+      quantity,
+      details: document.getElementById("details").value.trim(),
+      customer_name: document.getElementById("name").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      address: document.getElementById("address").value.trim(),
+      location: locationData,
+      payment_method: document.getElementById("payment").value,
 
-    if (getOrderType() === "delivery" && !address) {
-      showError("checkoutError", "Please enter your delivery address.");
-      document.getElementById("address").focus();
-      return;
-    }
-
-    const payload = {
-      name,
-      phone,
-      items: selected().map(p => ({
-        id:p.id,
-        quantity:quantities[p.id]
-      })),
-      order_type:getOrderType(),
-      payment_type:getPaymentType(),
-      address,
-      notes:document.getElementById("notes").value.trim(),
-      latitude,
-      longitude
+      // Telegram identity is verified by the server using initData.
+      init_data: tg.initData
     };
 
-    const btn = document.getElementById("submitBtn");
     submitting = true;
-    btn.disabled = true;
-    btn.textContent = "Submitting order…";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting order...";
 
     try {
-      // Sends order data to the Telegram bot's WEB_APP_DATA handler.
-      tg.sendData(JSON.stringify(payload));
-      btn.textContent = "Submitted — check your Telegram bot";
-      setTimeout(() => tg.close(), 900);
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "The order could not be submitted.");
+      }
+
+      showMessage(
+        "✅ " + (result.message || "Your order has been received.") +
+        (result.order_id ? " Order ID: " + result.order_id : ""),
+        "success"
+      );
+
+      form.reset();
+      locationData = null;
+      document.getElementById("locationStatus").textContent = "";
+      updateTotal();
+
+      if (tg) {
+        tg.HapticFeedback?.notificationOccurred("success");
+      }
+
     } catch (error) {
+      showMessage(
+        error.message || "Connection failed. Please try again.",
+        "error"
+      );
+    } finally {
       submitting = false;
-      btn.disabled = false;
-      btn.textContent = "Submit Order";
-      showError("checkoutError", "Could not submit the order. Please try again.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "✅ Submit Order";
     }
   });
 
-  renderCategories();
-  renderProducts();
-  updatePaymentInfo();
-})();
+  updateTotal();
 </script>
 </body>
 </html>
