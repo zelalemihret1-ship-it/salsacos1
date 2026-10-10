@@ -1,38 +1,733 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#171717"><title>Salsacos | Order</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#17130f">
+<title>Salsacos | Order Online</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
-:root{--bg:#f7f5f0;--card:#fff;--ink:#191919;--muted:#777;--accent:#e85d25;--line:#ece7df;--green:#208a57}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:100px}header{background:#191919;color:#fff;padding:22px 18px 20px;border-radius:0 0 24px 24px}header .eyebrow{color:#ffc49f;font-size:12px;font-weight:800;letter-spacing:1.5px}h1{margin:5px 0;font-size:28px}header p{margin:5px 0 0;color:#ddd;font-size:14px}.wrap{max-width:760px;margin:auto}.categories{display:flex;gap:8px;overflow:auto;padding:16px 14px 8px;scrollbar-width:none}.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 14px;white-space:nowrap;font-weight:700;color:#444}.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}.section-title{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px}.section-title h2{font-size:18px;margin:0}.section-title span{font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 12px}.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;flex-direction:column;min-height:150px}.emoji{font-size:30px}.item h3{font-size:14px;margin:8px 0 4px;line-height:1.25}.price{font-weight:800;margin-top:auto;padding:7px 0 10px}.add{background:#191919;color:#fff;border:0;border-radius:10px;padding:10px;font-weight:800}.qty{display:flex;align-items:center;justify-content:space-between;gap:8px}.qty button{width:34px;height:32px;border:0;border-radius:9px;background:#f1e9e2;font-size:18px;font-weight:800}.qty strong{font-size:14px}.cartbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom));z-index:5}.cartinner{max-width:730px;margin:auto;display:flex;align-items:center;gap:12px}.cartinfo{flex:1}.cartinfo b{display:block}.cartinfo small{color:var(--muted)}.primary{background:var(--accent);color:#fff;border:0;border-radius:12px;padding:14px 17px;font-weight:900;font-size:14px}.panel{margin:14px 12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}.panel h2{font-size:18px;margin:0 0 12px}.field{display:block;margin:12px 0}.field span{display:block;font-size:13px;font-weight:750;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #ded8cf;border-radius:10px;font:inherit;background:#fff}.field textarea{min-height:76px;resize:vertical}.options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.opt{padding:11px 7px;border:1px solid #ded8cf;background:#fff;border-radius:10px;font-weight:750}.opt.active{border-color:var(--accent);background:#fff1e9;color:#a43d12}.summaryline{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #f0ece7;font-size:14px}.total{display:flex;justify-content:space-between;font-weight:900;font-size:18px;padding-top:12px}.hide{display:none!important}.notice{font-size:12px;color:var(--muted);line-height:1.5}.age{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:10px 0}.error{color:#b3261e;font-size:13px;margin:8px 0}.success{text-align:center;padding:28px 16px}.success .big{font-size:54px}.success h2{margin:8px}.success p{line-height:1.6;color:#555}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}header{margin:0 0 8px}}
-</style></head><body><div class="wrap">
-<header><div class="eyebrow">FRESH • FLAVORFUL • SALSACOS</div><h1>What are you craving? 🌮</h1><p>Order your favorites in a few taps.</p></header>
-<div id="menuView"><nav class="categories" id="categories"></nav><div class="section-title"><h2 id="categoryTitle">Popular menu</h2><span>Prices in ETB</span></div><div class="grid" id="items"></div></div>
-<div id="checkoutView" class="hide"><div class="section-title"><h2>Your order</h2><button class="chip" id="backMenu">← Menu</button></div><div class="panel"><div id="checkoutSummary"></div><div class="total"><span>Total</span><span id="checkoutTotal">0 ETB</span></div></div><div class="panel"><h2>1. How would you like your order?</h2><div class="options" id="orderOptions"><button class="opt active" data-order="delivery">🚚 Delivery</button><button class="opt" data-order="pickup">🛍️ Self-pickup</button><button class="opt" data-order="dine_in">🍽️ Dine-in</button></div><p class="notice">Delivery fee: 50 ETB. Pickup and dine-in have no delivery fee.</p></div><div class="panel"><h2>2. Your details</h2><label class="field"><span>Full name *</span><input id="customerName" autocomplete="name" placeholder="Your full name"></label><label class="field"><span>Phone number *</span><input id="customerPhone" autocomplete="tel" type="tel" placeholder="09xxxxxxxx"></label><div id="addressWrap"><label class="field"><span>Delivery address or nearby landmark *</span><textarea id="customerAddress" placeholder="Area, building, nearby landmark"></textarea></label><button class="opt" id="gpsButton">📍 Use my current location</button><p class="notice" id="gpsStatus">Or type your address above. GPS support depends on your device and browser.</p></div></div><div class="panel"><h2>3. Payment method</h2><div class="options" id="paymentOptions"><button class="opt active" data-payment="telebirr">📱 Telebirr</button><button class="opt" data-payment="cbe">🏦 CBE</button><button class="opt" data-payment="cash">💵 Cash</button></div><div id="paymentInfo" class="notice" style="margin-top:12px"></div></div><div class="panel" id="agePanel"><label class="age"><input type="checkbox" id="ageConfirm"><span>I confirm I am of legal drinking age (required only if my cart contains alcohol).</span></label></div><div class="panel"><div class="notice">Telebirr/CBE payment is not automatically verified until official merchant API integration is configured. Your final order code is issued only after payment is verified. For support, contact @zilasun.</div><div id="error" class="error"></div><button class="primary" style="width:100%" id="submitOrder">Submit order</button></div></div>
-<div id="successView" class="panel success hide"><div class="big">🎉</div><h2>Order sent!</h2><p>Your order request is being sent to the bot. For Telebirr/CBE, the bot will provide a payment reference; the final order code is issued only after payment is verified. Follow the bot instructions and contact <b>@zilasun</b> for help.</p><button class="primary" id="closeApp">Done</button></div>
-</div><div class="cartbar" id="cartBar"><div class="cartinner"><div class="cartinfo"><b id="cartCount">0 items</b><small id="cartTotal">0 ETB</small></div><button class="primary" id="checkoutButton">View order →</button></div></div>
+:root {
+  --bg: #11100e;
+  --panel: #1c1a17;
+  --panel2: #26231e;
+  --text: #fffaf1;
+  --muted: #b6aea1;
+  --accent: #ffb82e;
+  --green: #4bc68b;
+  --border: #39352e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+.app {
+  max-width: 720px;
+  margin: auto;
+  padding: 16px 15px 150px;
+}
+.hero {
+  padding: 25px 20px;
+  border-radius: 23px;
+  background: linear-gradient(130deg, #54300e, #21180f 70%);
+  border: 1px solid #67451c;
+  margin-bottom: 22px;
+}
+.logo {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+h1 { margin: 10px 0 8px; font-size: 32px; }
+.hero p { color: #e2d2b9; line-height: 1.5; margin: 0; }
+.hero-bottom { margin-top: 18px; font-size: 13px; color: var(--accent); }
+.section-title {
+  font-size: 21px;
+  margin: 23px 0 13px;
+}
+.categories {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.chip {
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 11px 15px;
+}
+.chip.active {
+  background: var(--accent);
+  color: #201608;
+  border-color: var(--accent);
+  font-weight: 800;
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.product {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.product-emoji {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+.product-name { font-weight: 750; line-height: 1.35; }
+.product-category {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.product-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 15px;
+}
+.price { color: var(--accent); font-weight: 850; font-size: 14px; }
+.add {
+  border: 0;
+  background: var(--accent);
+  color: #211608;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-weight: 900;
+}
+.cart-box, .checkout-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 22px;
+}
+.cart-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cart-name { font-weight: 650; }
+.cart-price { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.qty button {
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel2);
+  color: var(--text);
+}
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 13px;
+  gap: 10px;
+}
+.grand-total {
+  font-size: 19px;
+  font-weight: 900;
+  color: var(--accent);
+}
+.field { margin: 15px 0; }
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #12110f;
+  color: var(--text);
+  padding: 13px;
+  border-radius: 11px;
+  outline: none;
+}
+.field textarea { min-height: 75px; resize: vertical; }
+.choice-list { display: grid; gap: 9px; }
+.choice {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #151411;
+}
+.choice input { accent-color: var(--accent); }
+.choice span { line-height: 1.4; }
+.primary {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--accent);
+  color: #211608;
+  font-weight: 900;
+  margin-top: 12px;
+}
+.secondary {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel2);
+  color: var(--text);
+  margin-top: 9px;
+}
+.muted { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.empty { color: var(--muted); padding: 15px 0; }
+.sticky {
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(17,16,14,.96);
+  border-top: 1px solid var(--border);
+  padding: 12px 15px calc(12px + env(safe-area-inset-bottom));
+  backdrop-filter: blur(12px);
+}
+.sticky-inner { max-width: 690px; margin: auto; }
+.sticky button { margin: 0; }
+.notice {
+  border-radius: 11px;
+  padding: 12px;
+  margin-top: 12px;
+  background: #29251d;
+  color: #ffe0a0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+#ageWrap { margin-top: 12px; }
+@media (min-width: 600px) {
+  .products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="logo">SALSA COS</div>
+    <h1>Good food.<br>Good mood. 🌮</h1>
+    <p>Fresh bites, delicious drinks, and your favorites from Salsacos.</p>
+    <div class="hero-bottom">🚚 DELIVERY AVAILABLE · ADDIS ABEBA</div>
+  </header>
+
+  <h2 class="section-title">Explore our menu</h2>
+  <div id="categories" class="categories"></div>
+  <div id="products" class="products"></div>
+
+  <section class="cart-box" id="cartSection">
+    <h2 class="section-title" style="margin-top:0">🛒 Your order</h2>
+    <div id="cartItems"></div>
+    <div id="totals"></div>
+  </section>
+
+  <section class="checkout-box" id="checkout">
+    <h2 class="section-title" style="margin-top:0">📦 Checkout</h2>
+
+    <div class="field">
+      <label for="customerName">Full name</label>
+      <input id="customerName" maxlength="150" autocomplete="name"
+             placeholder="Enter your full name">
+    </div>
+
+    <div class="field">
+      <label for="customerPhone">Phone number</label>
+      <input id="customerPhone" maxlength="40" type="tel"
+             autocomplete="tel" placeholder="09... or +251...">
+      <p class="muted">Enter a phone number where the restaurant can reach you.</p>
+    </div>
+
+    <div class="field">
+      <label>How would you like your order?</label>
+      <div class="choice-list">
+        <label class="choice">
+          <input type="radio" name="orderType" value="delivery" checked>
+          <span>🚚 <b>Delivery</b><br><small>Additional 50 ETB</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="orderType" value="pickup">
+          <span>🛍️ <b>Self-pickup</b><br><small>No delivery fee</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="orderType" value="dine_in">
+          <span>🍽️ <b>Dine-in</b><br><small>No delivery fee</small></span>
+        </label>
+      </div>
+    </div>
+
+    <div id="deliveryFields">
+      <div class="field">
+        <label for="address">Delivery address or nearby landmark</label>
+        <textarea id="address" maxlength="500"
+          placeholder="Area, building, street, or nearby landmark"></textarea>
+      </div>
+      <button class="secondary" type="button" id="locationButton">
+        📍 Use my current GPS location
+      </button>
+      <p id="locationStatus" class="muted">
+        You can type your address or share GPS location.
+      </p>
+    </div>
+
+    <div class="field">
+      <label>Payment method</label>
+      <div class="choice-list">
+        <label class="choice">
+          <input type="radio" name="paymentType" value="telebirr" checked>
+          <span>📱 <b>Telebirr</b><br><small>0907490883</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="paymentType" value="cbe">
+          <span>🏦 <b>Commercial Bank of Ethiopia</b><br>
+            <small>Account: 1000539408872</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="paymentType" value="cash">
+          <span>💵 <b>Cash</b><br><small>Arrange payment with the restaurant</small></span>
+        </label>
+      </div>
+    </div>
+
+    <div id="ageWrap">
+      <label class="choice">
+        <input type="checkbox" id="ageConfirmed">
+        <span>I confirm that I am of legal drinking age.</span>
+      </label>
+      <p class="muted">
+        This confirmation is required only when the order contains alcohol.
+        Alcohol orders are subject to applicable laws.
+      </p>
+    </div>
+
+    <div class="notice">
+      Your total is calculated again by the restaurant bot. Online payment
+      is not processed or verified automatically.
+    </div>
+
+    <button id="submitButton" class="primary" type="button">
+      Submit order
+    </button>
+    <p class="muted">
+      After submitting, look for your unique order code in the Telegram chat.
+      For Telebirr or CBE, include that code when sending your payment
+      screenshot to @zilasun.
+    </p>
+  </section>
+</div>
+
+<div class="sticky">
+  <div class="sticky-inner">
+    <button class="primary" id="viewCartButton" type="button">
+      🛒 View order · <span id="stickyTotal">0.00 ETB</span>
+    </button>
+  </div>
+</div>
+
 <script>
-const tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#191919');tg.setBackgroundColor('#f7f5f0')}catch(e){}}
-const products=[
-{id:'tacos',name:'Tacos',emoji:'🌮',price:250,cat:'food'},{id:'special_tacos',name:'Special Tacos',emoji:'🌮',price:300,cat:'food'},
-{id:'wrap',name:'Wrap',emoji:'🌯',price:200,cat:'food'},{id:'special_wrap',name:'Special Wrap',emoji:'🌯',price:250,cat:'food'},
-{id:'ketchup',name:'Ketchup',emoji:'🍅',price:40,cat:'sauce'},{id:'mayonnaise',name:'Mayonnaise',emoji:'🥣',price:40,cat:'sauce'},{id:'salsacos_sauce',name:'Salsacos Sauce',emoji:'🌶️',price:50,cat:'sauce'},
-{id:'coca_cola',name:'Coca-Cola',emoji:'🥤',price:70,cat:'soft_drinks'},{id:'fanta',name:'Fanta',emoji:'🍊',price:70,cat:'soft_drinks'},{id:'sprite',name:'Sprite',emoji:'🍋',price:70,cat:'soft_drinks'},{id:'water',name:'Bottled Water',emoji:'💧',price:50,cat:'soft_drinks'},
-{id:'milkshake',name:'Milkshake',emoji:'🥤',price:350,cat:'smoothies'},{id:'strawberry_shake',name:'Strawberry Shake',emoji:'🍓',price:350,cat:'smoothies'},
-{id:'strawberry_mojito',name:'Strawberry Mojito',emoji:'🍓',price:450,cat:'mojitos'},{id:'mint_mojito',name:'Mint Mojito',emoji:'🌿',price:450,cat:'mojitos'},
-{id:'dashen_beer',name:'Dashen Beer',emoji:'🍺',price:120,cat:'alcohol'},{id:'st_george_beer',name:'St. George Beer',emoji:'🍺',price:120,cat:'alcohol'},{id:'arada_beer',name:'Arada Beer',emoji:'🍺',price:120,cat:'alcohol'}];
-const cats=[['food','🌮 Food'],['sauce','🥫 Sauces'],['soft_drinks','🥤 Soft drinks'],['smoothies','🍓 Shakes'],['mojitos','🍹 Mojitos'],['alcohol','🍺 Alcohol']];
-const cart={};let category='food',orderType='delivery',payment='telebirr',gpsAddress='';const money=n=>new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(n)+' ETB';const $=id=>document.getElementById(id);
-function count(){return Object.values(cart).reduce((a,b)=>a+b,0)}function subtotal(){return products.reduce((s,p)=>s+p.price*(cart[p.id]||0),0)}function total(){return subtotal()+(orderType==='delivery'&&count()?50:0)}function hasAlcohol(){return products.some(p=>p.cat==='alcohol'&&(cart[p.id]||0)>0)}
-function renderCats(){$('categories').innerHTML=cats.map(([id,label])=>`<button class="chip ${category===id?'active':''}" data-cat="${id}">${label}</button>`).join('');document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{category=b.dataset.cat;renderCats();renderItems()})}
-function renderItems(){const title=cats.find(c=>c[0]===category)?.[1]||'Menu';$('categoryTitle').textContent=title;const list=products.filter(p=>p.cat===category);$('items').innerHTML=list.map(p=>`<article class="item"><div class="emoji">${p.emoji}</div><h3>${p.name}</h3><div class="price">${money(p.price)}</div>${cart[p.id]?`<div class="qty"><button data-dec="${p.id}">−</button><strong>${cart[p.id]} in order</strong><button data-inc="${p.id}">+</button></div>`:`<button class="add" data-inc="${p.id}">+ Add</button>`}</article>`).join('');document.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{cart[b.dataset.inc]=(cart[b.dataset.inc]||0)+1;renderItems();renderCart()});document.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{let id=b.dataset.dec;cart[id]--;if(cart[id]<=0)delete cart[id];renderItems();renderCart()})}
-function renderCart(){$('cartCount').textContent=`${count()} item${count()===1?'':'s'}`;$('cartTotal').textContent=money(total());$('checkoutButton').disabled=!count();$('checkoutButton').style.opacity=count()?1:.5}
-function renderSummary(){let rows=products.filter(p=>cart[p.id]).map(p=>`<div class="summaryline"><span>${p.emoji} ${p.name} × ${cart[p.id]}</span><b>${money(p.price*cart[p.id])}</b></div>`).join('');$('checkoutSummary').innerHTML=rows+`<div class="summaryline"><span>Subtotal</span><b>${money(subtotal())}</b></div>`+(orderType==='delivery'?`<div class="summaryline"><span>Delivery fee</span><b>${money(50)}</b></div>`:'');$('checkoutTotal').textContent=money(total());$('addressWrap').classList.toggle('hide',orderType!=='delivery');$('agePanel').classList.toggle('hide',!hasAlcohol());const infos={telebirr:'Send payment to Telebirr: 0907490883. Include your order code with the payment screenshot.',cbe:'CBE account: 1000539408872. Include your order code with the payment screenshot.',cash:'Pay as arranged with the restaurant.'};$('paymentInfo').textContent=infos[payment]}
-function showCheckout(){if(!count())return; $('menuView').classList.add('hide');$('checkoutView').classList.remove('hide');$('cartBar').classList.add('hide');renderSummary();window.scrollTo(0,0)}function showMenu(){$('checkoutView').classList.add('hide');$('menuView').classList.remove('hide');$('cartBar').classList.remove('hide');window.scrollTo(0,0)}
-document.querySelectorAll('[data-order]').forEach(b=>b.onclick=()=>{orderType=b.dataset.order;document.querySelectorAll('[data-order]').forEach(x=>x.classList.toggle('active',x===b));renderSummary()});document.querySelectorAll('[data-payment]').forEach(b=>b.onclick=()=>{payment=b.dataset.payment;document.querySelectorAll('[data-payment]').forEach(x=>x.classList.toggle('active',x===b));renderSummary()});$('checkoutButton').onclick=showCheckout;$('backMenu').onclick=showMenu;
-$('gpsButton').onclick=()=>{if(!navigator.geolocation){$('gpsStatus').textContent='Location is not supported here. Please type your address.';return} $('gpsStatus').textContent='Requesting your location…';navigator.geolocation.getCurrentPosition(pos=>{gpsAddress=`GPS coordinates: ${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;$('customerAddress').value=gpsAddress;$('gpsStatus').textContent='✓ Location added. You can still edit the address.'},()=>{$('gpsStatus').textContent='Could not access location. Please type your address instead.'},{enableHighAccuracy:true,timeout:10000})};
-$('submitOrder').onclick=()=>{const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim();let err='';if(!count())err='Your cart is empty.';else if(name.length<2)err='Please enter your full name.';else if(phone.replace(/\D/g,'').length<7)err='Please enter a valid phone number.';else if(orderType==='delivery'&&address.length<3)err='Please enter your delivery address or share GPS.';else if(hasAlcohol()&&!$('ageConfirm').checked)err='Please confirm you are of legal drinking age.';$('error').textContent=err;if(err)return;const payload={type:'salsacos_order',items:products.filter(p=>cart[p.id]).map(p=>({id:p.id,qty:cart[p.id]})),order_type:orderType,payment,name,phone,address:orderType==='delivery'?address:'Not required',age_confirmed:$('ageConfirm').checked};if(tg&&typeof tg.sendData==='function'){tg.sendData(JSON.stringify(payload));$('checkoutView').classList.add('hide');$('cartBar').classList.add('hide');$('successView').classList.remove('hide');window.scrollTo(0,0)}else{$('error').textContent='Open this page inside Telegram using the Salsacos bot to submit your order.'}};
-$('closeApp').onclick=()=>{if(tg)tg.close()};renderCats();renderItems();renderCart();
-</script></body></html>
+"use strict";
+
+const tg = window.Telegram && window.Telegram.WebApp;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+  try {
+    tg.setHeaderColor("#11100e");
+    tg.setBackgroundColor("#11100e");
+  } catch (_) {}
+}
+
+const MENU = [
+  {id:"tacos",name:"Tacos",emoji:"🌮",price:250,category:"food"},
+  {id:"special_tacos",name:"Special Tacos",emoji:"🌮",price:300,category:"food"},
+  {id:"wrap",name:"Wrap",emoji:"🌯",price:200,category:"food"},
+  {id:"special_wrap",name:"Special Wrap",emoji:"🌯",price:250,category:"food"},
+
+  {id:"ketchup",name:"Ketchup",emoji:"🍅",price:40,category:"sauce"},
+  {id:"mayonnaise",name:"Mayonnaise",emoji:"🥣",price:40,category:"sauce"},
+  {id:"salsacos_sauce",name:"Salsacos Sauce",emoji:"🌶️",price:50,category:"sauce"},
+
+  {id:"coca_cola",name:"Coca-Cola",emoji:"🥤",price:70,category:"soft_drinks"},
+  {id:"fanta",name:"Fanta",emoji:"🍊",price:70,category:"soft_drinks"},
+  {id:"sprite",name:"Sprite",emoji:"🍋",price:70,category:"soft_drinks"},
+  {id:"water",name:"Bottled Water",emoji:"💧",price:50,category:"soft_drinks"},
+
+  {id:"milkshake",name:"Milkshake",emoji:"🥤",price:350,category:"smoothies"},
+  {id:"strawberry_shake",name:"Strawberry Shake",emoji:"🍓",price:350,category:"smoothies"},
+
+  {id:"strawberry_mojito",name:"Strawberry Mojito",emoji:"🍓",price:450,category:"mojitos"},
+  {id:"mint_mojito",name:"Mint Mojito",emoji:"🌿",price:450,category:"mojitos"},
+
+  {id:"dashen_beer",name:"Dashen Beer",emoji:"🍺",price:120,category:"alcohol"},
+  {id:"st_george_beer",name:"St. George Beer",emoji:"🍺",price:120,category:"alcohol"},
+  {id:"arada_beer",name:"Arada Beer",emoji:"🍺",price:120,category:"alcohol"}
+];
+
+const CATEGORIES = [
+  {id:"all",name:"✨ All"},
+  {id:"food",name:"🌮 Food"},
+  {id:"sauce",name:"🥫 Sauces"},
+  {id:"soft_drinks",name:"🥤 Soft drinks"},
+  {id:"smoothies",name:"🍓 Shakes"},
+  {id:"mojitos",name:"🍹 Mojitos"},
+  {id:"alcohol",name:"🍺 Alcohol"}
+];
+
+const cart = {};
+let activeCategory = "all";
+let gps = null;
+let submitting = false;
+
+const money = n => Number(n).toLocaleString("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}) + " ETB";
+
+const getItem = id => MENU.find(p => p.id === id);
+const orderType = () =>
+  document.querySelector('input[name="orderType"]:checked').value;
+const paymentType = () =>
+  document.querySelector('input[name="paymentType"]:checked').value;
+
+function isAlcoholInCart() {
+  return Object.keys(cart).some(id =>
+    cart[id] > 0 && getItem(id).category === "alcohol"
+  );
+}
+
+function totals() {
+  let subtotal = 0;
+  Object.keys(cart).forEach(id => {
+    const item = getItem(id);
+    if (item) subtotal += item.price * cart[id];
+  });
+
+  const fee = orderType() === "delivery" ? 50 : 0;
+  return {subtotal, fee, total: subtotal + fee};
+}
+
+function renderCategories() {
+  const root = document.getElementById("categories");
+  root.replaceChildren();
+
+  CATEGORIES.forEach(category => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "chip" +
+      (activeCategory === category.id ? " active" : "");
+    button.textContent = category.name;
+    button.addEventListener("click", () => {
+      activeCategory = category.id;
+      renderCategories();
+      renderProducts();
+    });
+    root.appendChild(button);
+  });
+}
+
+function renderProducts() {
+  const root = document.getElementById("products");
+  root.replaceChildren();
+
+  const filtered = MENU.filter(item =>
+    activeCategory === "all" || item.category === activeCategory
+  );
+
+  filtered.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "product";
+
+    const emoji = document.createElement("div");
+    emoji.className = "product-emoji";
+    emoji.textContent = item.emoji;
+
+    const name = document.createElement("div");
+    name.className = "product-name";
+    name.textContent = item.name;
+
+    const category = document.createElement("div");
+    category.className = "product-category";
+    category.textContent =
+      CATEGORIES.find(c => c.id === item.category)?.name || "";
+
+    const bottom = document.createElement("div");
+    bottom.className = "product-bottom";
+
+    const price = document.createElement("span");
+    price.className = "price";
+    price.textContent = money(item.price);
+
+    const add = document.createElement("button");
+    add.className = "add";
+    add.type = "button";
+    add.textContent = cart[item.id] ? `+ Add (${cart[item.id]})` : "+ Add";
+    add.addEventListener("click", () => {
+      if ((cart[item.id] || 0) >= 50) {
+        alert("Maximum 50 units of each item.");
+        return;
+      }
+      cart[item.id] = (cart[item.id] || 0) + 1;
+      renderProducts();
+      renderCart();
+    });
+
+    bottom.append(price, add);
+    card.append(emoji, name, category, bottom);
+    root.appendChild(card);
+  });
+}
+
+function renderCart() {
+  const root = document.getElementById("cartItems");
+  root.replaceChildren();
+
+  const selected = Object.keys(cart).filter(id => cart[id] > 0);
+
+  if (!selected.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Your cart is empty. Add something delicious!";
+    root.appendChild(empty);
+  }
+
+  selected.forEach(id => {
+    const item = getItem(id);
+    const row = document.createElement("div");
+    row.className = "cart-row";
+
+    const info = document.createElement("div");
+    const name = document.createElement("div");
+    name.className = "cart-name";
+    name.textContent = item.emoji + " " + item.name;
+
+    const price = document.createElement("div");
+    price.className = "cart-price";
+    price.textContent = money(item.price * cart[id]);
+
+    info.append(name, price);
+
+    const controls = document.createElement("div");
+    controls.className = "qty";
+
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", "Remove one " + item.name);
+    minus.addEventListener("click", () => {
+      cart[id]--;
+      if (cart[id] <= 0) delete cart[id];
+      renderProducts();
+      renderCart();
+    });
+
+    const quantity = document.createElement("b");
+    quantity.textContent = String(cart[id]);
+
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", "Add one " + item.name);
+    plus.addEventListener("click", () => {
+      if (cart[id] >= 50) {
+        alert("Maximum 50 units of each item.");
+        return;
+      }
+      cart[id]++;
+      renderProducts();
+      renderCart();
+    });
+
+    controls.append(minus, quantity, plus);
+    row.append(info, controls);
+    root.appendChild(row);
+  });
+
+  const sum = totals();
+  const totalsRoot = document.getElementById("totals");
+  totalsRoot.replaceChildren();
+
+  function addLine(label, amount, extraClass) {
+    const row = document.createElement("div");
+    row.className = "total-line" + (extraClass ? " " + extraClass : "");
+    const left = document.createElement("span");
+    left.textContent = label;
+    const right = document.createElement("span");
+    right.textContent = money(amount);
+    row.append(left, right);
+    totalsRoot.appendChild(row);
+  }
+
+  addLine("Subtotal", sum.subtotal);
+  if (sum.fee) addLine("Delivery fee", sum.fee);
+  addLine("Total", sum.total, "grand-total");
+
+  document.getElementById("stickyTotal").textContent = money(sum.total);
+  document.getElementById("ageWrap").style.display =
+    isAlcoholInCart() ? "block" : "none";
+
+  document.getElementById("deliveryFields").style.display =
+    orderType() === "delivery" ? "block" : "none";
+}
+
+document.querySelectorAll('input[name="orderType"]').forEach(input => {
+  input.addEventListener("change", renderCart);
+});
+
+document.querySelectorAll('input[name="paymentType"]').forEach(input => {
+  input.addEventListener("change", () => {});
+});
+
+document.getElementById("locationButton").addEventListener("click", () => {
+  if (!navigator.geolocation) {
+    alert("GPS is not available. Please type your delivery address.");
+    return;
+  }
+
+  const status = document.getElementById("locationStatus");
+  status.textContent = "Requesting your location...";
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      gps = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+      status.textContent =
+        `📍 Location received: ${gps.latitude.toFixed(5)}, ` +
+        `${gps.longitude.toFixed(5)}`;
+    },
+    error => {
+      gps = null;
+      status.textContent =
+        "Could not access GPS. Please enter your address manually.";
+      console.warn("Geolocation error:", error.message);
+    },
+    {enableHighAccuracy: true, timeout: 15000, maximumAge: 60000}
+  );
+});
+
+document.getElementById("address").addEventListener("input", () => {
+  // Keep a selected GPS location unless the customer changes it intentionally.
+});
+
+document.getElementById("viewCartButton").addEventListener("click", () => {
+  document.getElementById("cartSection").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+document.getElementById("submitButton").addEventListener("click", () => {
+  if (submitting) return;
+
+  if (!tg) {
+    alert("Please open this page inside your Telegram bot.");
+    return;
+  }
+
+  const selected = Object.keys(cart)
+    .filter(id => cart[id] > 0)
+    .map(id => ({id, quantity: cart[id]}));
+
+  if (!selected.length) {
+    alert("Please add at least one item to your cart.");
+    return;
+  }
+
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const type = orderType();
+  const payment = paymentType();
+
+  if (name.length < 2) {
+    alert("Please enter your full name.");
+    return;
+  }
+
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 7 || digits.length > 15) {
+    alert("Please enter a valid phone number.");
+    return;
+  }
+
+  if (type === "delivery" && address.length < 3 && !gps) {
+    alert("Please enter a delivery address or share your GPS location.");
+    return;
+  }
+
+  if (isAlcoholInCart() &&
+      !document.getElementById("ageConfirmed").checked) {
+    alert("Please confirm that you are of legal drinking age.");
+    return;
+  }
+
+  const payload = {
+    items: selected,
+    order_type: type,
+    payment_type: payment,
+    name,
+    phone,
+    address,
+    age_confirmed: document.getElementById("ageConfirmed").checked
+  };
+
+  if (type === "delivery" && gps) {
+    payload.latitude = gps.latitude;
+    payload.longitude = gps.longitude;
+  }
+
+  const submit = document.getElementById("submitButton");
+  submitting = true;
+  submit.disabled = true;
+  submit.textContent = "Submitting order...";
+
+  try {
+    tg.sendData(JSON.stringify(payload));
+  } catch (error) {
+    submitting = false;
+    submit.disabled = false;
+    submit.textContent = "Submit order";
+    console.error(error);
+    alert("Could not send the order. Please try again.");
+  }
+});
+
+renderCategories();
+renderProducts();
+renderCart();
+</script>
+</body>
+</html>
