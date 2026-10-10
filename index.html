@@ -1,582 +1,822 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#17130f">
-<title>Salsacos | Order Online</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <title>Salsacos | Adama</title>
 
-<style>
-:root {
-  --bg: #11100e;
-  --panel: #1c1a17;
-  --panel2: #26231e;
-  --text: #fffaf1;
-  --muted: #b6aea1;
-  --accent: #ffb82e;
-  --border: #39352e;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
-.app { max-width: 720px; margin: auto; padding: 16px 15px 150px; }
-.hero {
-  padding: 25px 20px;
-  border-radius: 23px;
-  background: linear-gradient(130deg, #54300e, #21180f 70%);
-  border: 1px solid #67451c;
-  margin-bottom: 22px;
-}
-.logo { font-size: 12px; color: var(--accent); font-weight: 900; letter-spacing: 4px; }
-h1 { margin: 10px 0 8px; font-size: 32px; }
-.hero p { color: #e2d2b9; line-height: 1.5; }
-.hero-bottom { margin-top: 18px; font-size: 13px; color: var(--accent); }
-.section-title { font-size: 21px; margin: 23px 0 13px; }
-.categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
-.chip {
-  white-space: nowrap; border: 1px solid var(--border);
-  background: var(--panel); color: var(--text);
-  border-radius: 999px; padding: 11px 15px;
-}
-.chip.active { background: var(--accent); color: #201608; font-weight: 800; }
-.products { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
-.product {
-  background: var(--panel); border: 1px solid var(--border);
-  border-radius: 17px; padding: 14px; display: flex;
-  flex-direction: column; min-width: 0;
-}
-.product-emoji { font-size: 35px; margin-bottom: 10px; }
-.product-name { font-weight: 750; line-height: 1.35; }
-.product-category { color: var(--muted); font-size: 12px; margin-top: 5px; }
-.product-bottom { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 15px; }
-.price { color: var(--accent); font-weight: 850; font-size: 14px; }
-.add { border: 0; background: var(--accent); color: #211608; border-radius: 10px; padding: 9px 12px; font-weight: 900; }
-.cart-box, .checkout-box {
-  background: var(--panel); border: 1px solid var(--border);
-  border-radius: 18px; padding: 16px; margin-top: 22px;
-}
-.cart-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.cart-name { font-weight: 650; }
-.cart-price { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.qty { display: flex; align-items: center; gap: 10px; }
-.qty button {
-  width: 31px; height: 31px; border: 1px solid var(--border);
-  border-radius: 9px; background: var(--panel2); color: var(--text);
-}
-.total-line { display: flex; justify-content: space-between; margin-top: 13px; gap: 10px; }
-.grand-total { font-size: 19px; font-weight: 900; color: var(--accent); }
-.field { margin: 15px 0; }
-.field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.field input, .field textarea {
-  width: 100%; border: 1px solid var(--border);
-  background: #12110f; color: var(--text); padding: 13px;
-  border-radius: 11px; outline: none;
-}
-.field textarea { min-height: 75px; resize: vertical; }
-.choice-list { display: grid; gap: 9px; }
-.choice {
-  display: flex; gap: 10px; align-items: center;
-  padding: 13px; border: 1px solid var(--border);
-  border-radius: 12px; background: #151411;
-}
-.choice input { accent-color: var(--accent); }
-.choice span { line-height: 1.4; }
-.primary {
-  width: 100%; padding: 15px; border: 0; border-radius: 13px;
-  background: var(--accent); color: #211608; font-weight: 900; margin-top: 12px;
-}
-.primary:disabled { opacity: .65; }
-.secondary {
-  width: 100%; padding: 12px; border: 1px solid var(--border);
-  border-radius: 12px; background: var(--panel2); color: var(--text); margin-top: 9px;
-}
-.muted { color: var(--muted); font-size: 13px; line-height: 1.6; }
-.empty { color: var(--muted); padding: 15px 0; }
-.sticky {
-  position: fixed; z-index: 5; bottom: 0; left: 0; right: 0;
-  background: rgba(17,16,14,.96); border-top: 1px solid var(--border);
-  padding: 12px 15px calc(12px + env(safe-area-inset-bottom));
-  backdrop-filter: blur(12px);
-}
-.sticky-inner { max-width: 690px; margin: auto; }
-.sticky button { margin: 0; }
-.notice { border-radius: 11px; padding: 12px; margin-top: 12px; background: #29251d; color: #ffe0a0; font-size: 13px; line-height: 1.5; }
-@media (min-width: 600px) {
-  .products { grid-template-columns: repeat(3,minmax(0,1fr)); }
-}
-</style>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --bg: #111111;
+      --card: #1d1d1d;
+      --gold: #f4b400;
+      --gold-light: #ffd45c;
+      --text: #ffffff;
+      --muted: #b5b5b5;
+      --border: #333333;
+      --green: #23b26d;
+      --danger: #ef5350;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 0 35px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .hero {
+      padding: 26px 18px;
+      text-align: center;
+      background: linear-gradient(140deg, #29200b, #111111 70%);
+      border: 1px solid #5c4610;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 8px 0;
+    }
+
+    .location {
+      display: inline-block;
+      padding: 8px 12px;
+      margin-top: 8px;
+      color: var(--gold-light);
+      border: 1px solid #705515;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 22px 0 12px;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 3px 0 12px;
+    }
+
+    .category {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 10px 15px;
+      background: var(--card);
+      color: white;
+    }
+
+    .category.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #111;
+      font-weight: bold;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .product {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+    }
+
+    .product-image {
+      height: 115px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(140deg, #302817, #181818);
+      font-size: 48px;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .product-name {
+      font-weight: bold;
+      font-size: 15px;
+      min-height: 36px;
+    }
+
+    .product-price {
+      margin: 8px 0 12px;
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .add-button, .primary-button {
+      border: none;
+      border-radius: 9px;
+      background: var(--gold);
+      color: #111;
+      padding: 11px;
+      font-weight: bold;
+      width: 100%;
+    }
+
+    .add-button:active, .primary-button:active {
+      transform: scale(.98);
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 14px;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-row:last-child {
+      border-bottom: none;
+    }
+
+    .cart-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .cart-price {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #5e4a16;
+      border-radius: 8px;
+      background: #2b2414;
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 18px 0;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px;
+      background: #121212;
+      color: white;
+      border: 1px solid #414141;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .field textarea {
+      min-height: 75px;
+      resize: vertical;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #151515;
+    }
+
+    .option input {
+      accent-color: var(--gold);
+    }
+
+    .option span {
+      font-size: 14px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 12px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary-line.total {
+      padding-top: 13px;
+      border-top: 1px solid var(--border);
+      color: var(--gold);
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    .delivery-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .checkbox-row input {
+      margin-top: 3px;
+      accent-color: var(--gold);
+    }
+
+    .submit-button {
+      margin-top: 16px;
+      padding: 15px;
+      font-size: 16px;
+    }
+
+    .notice {
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #252014;
+      color: #f4d889;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      margin: 25px 0 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 360px) {
+      .container {
+        padding: 11px;
+      }
+
+      .menu {
+        gap: 8px;
+      }
+
+      .product-info {
+        padding: 9px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="app">
+  <main class="container">
 
-<header class="hero">
-  <div class="logo">SALSA COS</div>
-  <h1>Good food.<br>Good mood. 🌮</h1>
-  <p>Fresh bites, delicious drinks, and your favorites from Salsacos.</p>
-  <div class="hero-bottom">🚚 DELIVERY AVAILABLE · ADDIS ABEBA</div>
-</header>
+    <header class="hero">
+      <div class="logo">SALSACOS</div>
+      <p>Fresh food. Great taste. Happy moments.</p>
+      <div class="location">📍 Adama, Ethiopia</div>
+    </header>
 
-<h2 class="section-title">Explore our menu</h2>
-<div id="categories" class="categories"></div>
-<div id="products" class="products"></div>
+    <section>
+      <h2>🍽️ Our Menu</h2>
 
-<section class="cart-box" id="cartSection">
-  <h2 class="section-title" style="margin-top:0">🛒 Your order</h2>
-  <div id="cartItems"></div>
-  <div id="totals"></div>
-</section>
+      <div class="categories" id="categories">
+        <button class="category active" data-category="all">All</button>
+        <button class="category" data-category="food">Food</button>
+        <button class="category" data-category="sides">Sauces</button>
+        <button class="category" data-category="drinks">Drinks</button>
+        <button class="category" data-category="shakes">Shakes</button>
+        <button class="category" data-category="mocktails">Mocktails</button>
+        <button class="category" data-category="beer">Beer</button>
+      </div>
 
-<section class="checkout-box" id="checkout">
-  <h2 class="section-title" style="margin-top:0">📦 Checkout</h2>
+      <div class="menu" id="menu"></div>
+    </section>
 
-  <div class="field">
-    <label for="customerName">Full name</label>
-    <input id="customerName" maxlength="150" autocomplete="name"
-      placeholder="Enter your full name">
-  </div>
+    <section>
+      <h2>🛒 Your Cart</h2>
+      <div class="section-card">
+        <div id="cartItems">
+          <div class="empty">Your cart is empty. Add something delicious!</div>
+        </div>
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="subtotal">0 ETB</span>
+        </div>
+        <div class="summary-line">
+          <span>Delivery fee</span>
+          <span id="deliveryFee">0 ETB</span>
+        </div>
+        <div class="summary-line total">
+          <span>Total</span>
+          <span id="total">0 ETB</span>
+        </div>
+      </div>
+    </section>
 
-  <div class="field">
-    <label for="customerPhone">Phone number</label>
-    <input id="customerPhone" maxlength="40" type="tel"
-      autocomplete="tel" placeholder="09... or +251...">
-    <p class="muted">Enter a phone number where the restaurant can reach you.</p>
-  </div>
+    <section>
+      <h2>📦 Order Information</h2>
 
-  <div class="field">
-    <label>How would you like your order?</label>
-    <div class="choice-list">
-      <label class="choice">
-        <input type="radio" name="orderType" value="delivery" checked>
-        <span>🚚 <b>Delivery</b><br><small>Additional 50 ETB</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="orderType" value="pickup">
-        <span>🛍️ <b>Self-pickup</b><br><small>No delivery fee</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="orderType" value="dine_in">
-        <span>🍽️ <b>Dine-in</b><br><small>No delivery fee</small></span>
-      </label>
-    </div>
-  </div>
+      <div class="section-card">
+        <div class="field">
+          <label for="customerName">Full Name *</label>
+          <input id="customerName" type="text" placeholder="Enter your full name"
+                 autocomplete="name" required>
+        </div>
 
-  <div id="deliveryFields">
-    <div class="field">
-      <label for="address">Delivery address or nearby landmark</label>
-      <textarea id="address" maxlength="500"
-        placeholder="Area, building, street, or nearby landmark"></textarea>
-    </div>
-    <button class="secondary" type="button" id="locationButton">
-      📍 Use my current GPS location
-    </button>
-    <p id="locationStatus" class="muted">You can type your address or share GPS location.</p>
-  </div>
+        <div class="field">
+          <label for="phone">Phone Number *</label>
+          <input id="phone" type="tel" placeholder="09XXXXXXXX"
+                 autocomplete="tel" required>
+        </div>
 
-  <div class="field">
-    <label>Payment method</label>
-    <div class="choice-list">
-      <label class="choice">
-        <input type="radio" name="paymentType" value="telebirr" checked>
-        <span>📱 <b>Telebirr</b><br><small>0907490883</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="paymentType" value="cbe">
-        <span>🏦 <b>Commercial Bank of Ethiopia</b><br>
-          <small>Account: 1000539408872</small></span>
-      </label>
-      <label class="choice">
-        <input type="radio" name="paymentType" value="cash">
-        <span>💵 <b>Cash</b><br><small>Arrange payment with the restaurant</small></span>
-      </label>
-    </div>
-  </div>
+        <div class="field">
+          <label>Order Type *</label>
+          <div class="option-list">
+            <label class="option">
+              <input type="radio" name="orderType" value="delivery" checked>
+              <span>🛵 Delivery in Adama (+50 ETB)</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="orderType" value="pickup">
+              <span>🛍️ Pickup</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="orderType" value="dine_in">
+              <span>🍽️ Dine-in</span>
+            </label>
+          </div>
+        </div>
 
-  <div id="ageWrap">
-    <label class="choice">
-      <input type="checkbox" id="ageConfirmed">
-      <span>I confirm that I am of legal drinking age.</span>
-    </label>
-    <p class="muted">This confirmation is required only when the order contains alcohol.</p>
-  </div>
+        <div class="field" id="addressField">
+          <label for="address">Delivery Address in Adama *</label>
+          <textarea id="address"
+            placeholder="Enter your area, street, building, or nearby landmark in Adama"></textarea>
+          <p class="delivery-note">
+            Delivery is configured for Adama, Ethiopia. Please provide a clear local address.
+          </p>
+          <button type="button" class="add-button" id="locationButton"
+                  style="margin-top:8px">
+            📍 Share My Current Location
+          </button>
+          <p class="delivery-note" id="locationStatus"></p>
+        </div>
 
-  <div class="notice">
-    The restaurant bot recalculates your total. Online payments are not automatically verified.
-  </div>
+        <div class="field">
+          <label for="notes">Order Notes (Optional)</label>
+          <textarea id="notes" placeholder="Any special requests?"></textarea>
+        </div>
+      </div>
+    </section>
 
-  <button id="submitButton" class="primary" type="button">Submit order</button>
-  <p class="muted">
-    After submitting, look for your unique order code in the Telegram chat.
-    For Telebirr or CBE, include that code when sending your payment screenshot to @zilasun.
-  </p>
-</section>
-</div>
+    <section>
+      <h2>💳 Payment Method</h2>
 
-<div class="sticky">
-  <div class="sticky-inner">
-    <button class="primary" id="viewCartButton" type="button">
-      🛒 View order · <span id="stickyTotal">0.00 ETB</span>
-    </button>
-  </div>
-</div>
+      <div class="section-card">
+        <div class="option-list">
+          <label class="option">
+            <input type="radio" name="paymentType" value="telebirr" checked>
+            <span>📱 Telebirr — 0907490883</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="paymentType" value="cbe">
+            <span>🏦 Commercial Bank of Ethiopia (CBE) — 1000539408872</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="paymentType" value="cash">
+            <span>💵 Cash payment</span>
+          </label>
+        </div>
 
-<script>
-"use strict";
+        <div class="notice" id="paymentNotice">
+          Telebirr: 0907490883. After placing your order, follow the payment
+          instructions sent by the bot. Payment must be confirmed by the restaurant.
+        </div>
+      </div>
+    </section>
 
-const tg = window.Telegram && window.Telegram.WebApp;
+    <section id="ageSection" class="hidden">
+      <h2>🔞 Age Confirmation</h2>
+      <div class="section-card">
+        <label class="checkbox-row">
+          <input type="checkbox" id="ageConfirmed">
+          <span>I confirm that I meet the legal age requirements for purchasing alcoholic beverages.</span>
+        </label>
+      </div>
+    </section>
 
-if (tg) {
-  tg.ready();
-  tg.expand();
-  try {
-    tg.setHeaderColor("#11100e");
-    tg.setBackgroundColor("#11100e");
-  } catch (_) {}
-}
+    <section>
+      <div class="section-card">
+        <label class="checkbox-row">
+          <input type="checkbox" id="confirmDetails">
+          <span>I confirm that my contact information and order details are correct.</span>
+        </label>
 
-const MENU = [
-  {id:"tacos",name:"Tacos",emoji:"🌮",price:250,category:"food"},
-  {id:"special_tacos",name:"Special Tacos",emoji:"🌮",price:300,category:"food"},
-  {id:"wrap",name:"Wrap",emoji:"🌯",price:200,category:"food"},
-  {id:"special_wrap",name:"Special Wrap",emoji:"🌯",price:250,category:"food"},
-  {id:"ketchup",name:"Ketchup",emoji:"🍅",price:40,category:"sauce"},
-  {id:"mayonnaise",name:"Mayonnaise",emoji:"🥣",price:40,category:"sauce"},
-  {id:"salsacos_sauce",name:"Salsacos Sauce",emoji:"🌶️",price:50,category:"sauce"},
-  {id:"coca_cola",name:"Coca-Cola",emoji:"🥤",price:70,category:"soft_drinks"},
-  {id:"fanta",name:"Fanta",emoji:"🍊",price:70,category:"soft_drinks"},
-  {id:"sprite",name:"Sprite",emoji:"🍋",price:70,category:"soft_drinks"},
-  {id:"water",name:"Bottled Water",emoji:"💧",price:50,category:"soft_drinks"},
-  {id:"milkshake",name:"Milkshake",emoji:"🥤",price:350,category:"smoothies"},
-  {id:"strawberry_shake",name:"Strawberry Shake",emoji:"🍓",price:350,category:"smoothies"},
-  {id:"strawberry_mojito",name:"Strawberry Mojito",emoji:"🍓",price:450,category:"mojitos"},
-  {id:"mint_mojito",name:"Mint Mojito",emoji:"🌿",price:450,category:"mojitos"},
-  {id:"dashen_beer",name:"Dashen Beer",emoji:"🍺",price:120,category:"alcohol"},
-  {id:"st_george_beer",name:"St. George Beer",emoji:"🍺",price:120,category:"alcohol"},
-  {id:"arada_beer",name:"Arada Beer",emoji:"🍺",price:120,category:"alcohol"}
-];
+        <button class="primary-button submit-button" id="placeOrder">
+          Place Order
+        </button>
 
-const CATEGORIES = [
-  {id:"all",name:"✨ All"},
-  {id:"food",name:"🌮 Food"},
-  {id:"sauce",name:"🥫 Sauces"},
-  {id:"soft_drinks",name:"🥤 Soft drinks"},
-  {id:"smoothies",name:"🍓 Shakes"},
-  {id:"mojitos",name:"🍹 Mojitos"},
-  {id:"alcohol",name:"🍺 Alcohol"}
-];
+        <p class="delivery-note">
+          Your order will be sent to the Salsacos Telegram bot. The bot must be
+          configured to forward orders to @salsacos. Submitting an order does not
+          mean payment has been verified.
+        </p>
+      </div>
+    </section>
 
-const cart = {};
-let activeCategory = "all";
-let gps = null;
-let submitting = false;
+    <footer class="footer">
+      Salsacos · Adama, Ethiopia<br>
+      Customer service: @zilasun
+    </footer>
 
-const money = n => Number(n).toLocaleString("en-US", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-}) + " ETB";
+  </main>
 
-const getItem = id => MENU.find(p => p.id === id);
-const orderType = () => document.querySelector('input[name="orderType"]:checked').value;
-const paymentType = () => document.querySelector('input[name="paymentType"]:checked').value;
+  <script>
+    const tg = window.Telegram && window.Telegram.WebApp;
 
-function isAlcoholInCart() {
-  return Object.keys(cart).some(id => cart[id] > 0 && getItem(id).category === "alcohol");
-}
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
 
-function totals() {
-  let subtotal = 0;
-  Object.keys(cart).forEach(id => {
-    const item = getItem(id);
-    if (item) subtotal += item.price * cart[id];
-  });
-  const fee = orderType() === "delivery" ? 50 : 0;
-  return {subtotal, fee, total: subtotal + fee};
-}
+    const MENU = [
+      { id: "tacos", name: "Tacos", price: 250, category: "food", emoji: "🌮" },
+      { id: "special_tacos", name: "Special Tacos", price: 300, category: "food", emoji: "🌮" },
+      { id: "wrap", name: "Wrap", price: 200, category: "food", emoji: "🌯" },
+      { id: "special_wrap", name: "Special Wrap", price: 250, category: "food", emoji: "🌯" },
 
-function renderCategories() {
-  const root = document.getElementById("categories");
-  root.replaceChildren();
-  CATEGORIES.forEach(category => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "chip" + (activeCategory === category.id ? " active" : "");
-    button.textContent = category.name;
-    button.addEventListener("click", () => {
-      activeCategory = category.id;
-      renderCategories();
-      renderProducts();
-    });
-    root.appendChild(button);
-  });
-}
+      { id: "ketchup", name: "Ketchup", price: 40, category: "sides", emoji: "🍅" },
+      { id: "mayonnaise", name: "Mayonnaise", price: 40, category: "sides", emoji: "🥣" },
+      { id: "salsacos_sauce", name: "Salsacos Sauce", price: 50, category: "sides", emoji: "🌶️" },
 
-function renderProducts() {
-  const root = document.getElementById("products");
-  root.replaceChildren();
+      { id: "coca_cola", name: "Coca-Cola", price: 70, category: "drinks", emoji: "🥤" },
+      { id: "fanta", name: "Fanta", price: 70, category: "drinks", emoji: "🧡" },
+      { id: "sprite", name: "Sprite", price: 70, category: "drinks", emoji: "🥤" },
+      { id: "water", name: "Water", price: 50, category: "drinks", emoji: "💧" },
 
-  MENU.filter(item => activeCategory === "all" || item.category === activeCategory)
-    .forEach(item => {
-      const card = document.createElement("article");
-      card.className = "product";
+      { id: "milkshake", name: "Milkshake", price: 350, category: "shakes", emoji: "🥛" },
+      { id: "strawberry_shake", name: "Strawberry Shake", price: 350, category: "shakes", emoji: "🍓" },
 
-      const emoji = document.createElement("div");
-      emoji.className = "product-emoji";
-      emoji.textContent = item.emoji;
+      { id: "strawberry_mocktail", name: "Strawberry Mocktail", price: 450, category: "mocktails", emoji: "🍹" },
+      { id: "mojito", name: "Mojito", price: 450, category: "mocktails", emoji: "🍃" },
 
-      const name = document.createElement("div");
-      name.className = "product-name";
-      name.textContent = item.name;
+      { id: "dashen_beer", name: "Dashen Beer", price: 120, category: "beer", emoji: "🍺", alcohol: true },
+      { id: "st_george_beer", name: "St. George Beer", price: 120, category: "beer", emoji: "🍺", alcohol: true },
+      { id: "arada_beer", name: "Arada Beer", price: 120, category: "beer", emoji: "🍺", alcohol: true }
+    ];
 
-      const category = document.createElement("div");
-      category.className = "product-category";
-      category.textContent = CATEGORIES.find(c => c.id === item.category)?.name || "";
+    const cart = {};
+    let activeCategory = "all";
+    let customerLocation = null;
 
-      const bottom = document.createElement("div");
-      bottom.className = "product-bottom";
+    const menuElement = document.getElementById("menu");
+    const cartElement = document.getElementById("cartItems");
 
-      const price = document.createElement("span");
-      price.className = "price";
-      price.textContent = money(item.price);
+    function money(amount) {
+      return amount.toLocaleString("en-US") + " ETB";
+    }
 
-      const add = document.createElement("button");
-      add.className = "add";
-      add.type = "button";
-      add.textContent = cart[item.id] ? `+ Add (${cart[item.id]})` : "+ Add";
+    function getOrderType() {
+      return document.querySelector('input[name="orderType"]:checked').value;
+    }
 
-      add.addEventListener("click", () => {
-        if ((cart[item.id] || 0) >= 50) {
-          alert("Maximum 50 units of each item.");
-          return;
-        }
-        cart[item.id] = (cart[item.id] || 0) + 1;
-        renderProducts();
-        renderCart();
+    function getPaymentType() {
+      return document.querySelector('input[name="paymentType"]:checked').value;
+    }
+
+    function getSubtotal() {
+      return Object.entries(cart).reduce((sum, [id, quantity]) => {
+        const item = MENU.find(product => product.id === id);
+        return sum + (item ? item.price * quantity : 0);
+      }, 0);
+    }
+
+    function getDeliveryFee() {
+      return getOrderType() === "delivery" ? 50 : 0;
+    }
+
+    function getTotal() {
+      return getSubtotal() + getDeliveryFee();
+    }
+
+    function renderMenu() {
+      const items = MENU.filter(item =>
+        activeCategory === "all" || item.category === activeCategory
+      );
+
+      menuElement.innerHTML = items.map(item => `
+        <article class="product">
+          <div class="product-image">${item.emoji}</div>
+          <div class="product-info">
+            <div class="product-name">${item.name}</div>
+            <div class="product-price">${money(item.price)}</div>
+            <button class="add-button" data-add="${item.id}">
+              ${cart[item.id] ? "Add More +" : "Add to Cart +"}
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderCart() {
+      const entries = Object.entries(cart).filter(([, quantity]) => quantity > 0);
+
+      if (entries.length === 0) {
+        cartElement.innerHTML = '<div class="empty">Your cart is empty. Add something delicious!</div>';
+      } else {
+        cartElement.innerHTML = entries.map(([id, quantity]) => {
+          const item = MENU.find(product => product.id === id);
+          if (!item) return "";
+
+          return `
+            <div class="cart-row">
+              <div>
+                <div class="cart-name">${item.emoji} ${item.name}</div>
+                <div class="cart-price">${money(item.price)} each</div>
+                <div class="cart-price">Total: ${money(item.price * quantity)}</div>
+              </div>
+              <div class="quantity">
+                <button data-remove="${id}" aria-label="Remove one">−</button>
+                <strong>${quantity}</strong>
+                <button data-add="${id}" aria-label="Add one">+</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.getElementById("subtotal").textContent = money(getSubtotal());
+      document.getElementById("deliveryFee").textContent = money(getDeliveryFee());
+      document.getElementById("total").textContent = money(getTotal());
+
+      updateAgeSection();
+    }
+
+    function addItem(id) {
+      const item = MENU.find(product => product.id === id);
+      if (!item) return;
+
+      cart[id] = (cart[id] || 0) + 1;
+      renderMenu();
+      renderCart();
+    }
+
+    function removeItem(id) {
+      if (!cart[id]) return;
+
+      cart[id] -= 1;
+      if (cart[id] <= 0) delete cart[id];
+
+      renderMenu();
+      renderCart();
+    }
+
+    function updateAgeSection() {
+      const hasAlcohol = Object.keys(cart).some(id => {
+        const item = MENU.find(product => product.id === id);
+        return item && item.alcohol;
       });
 
-      bottom.append(price, add);
-      card.append(emoji, name, category, bottom);
-      root.appendChild(card);
-    });
-}
+      document.getElementById("ageSection").classList.toggle("hidden", !hasAlcohol);
+      if (!hasAlcohol) {
+        document.getElementById("ageConfirmed").checked = false;
+      }
+    }
 
-function renderCart() {
-  const root = document.getElementById("cartItems");
-  root.replaceChildren();
+    document.getElementById("categories").addEventListener("click", event => {
+      const button = event.target.closest("[data-category]");
+      if (!button) return;
 
-  const selected = Object.keys(cart).filter(id => cart[id] > 0);
+      activeCategory = button.dataset.category;
 
-  if (!selected.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.textContent = "Your cart is empty. Add something delicious!";
-    root.appendChild(empty);
-  }
+      document.querySelectorAll(".category").forEach(element => {
+        element.classList.toggle("active", element === button);
+      });
 
-  selected.forEach(id => {
-    const item = getItem(id);
-    const row = document.createElement("div");
-    row.className = "cart-row";
-
-    const info = document.createElement("div");
-    const name = document.createElement("div");
-    name.className = "cart-name";
-    name.textContent = item.emoji + " " + item.name;
-
-    const price = document.createElement("div");
-    price.className = "cart-price";
-    price.textContent = money(item.price * cart[id]);
-    info.append(name, price);
-
-    const controls = document.createElement("div");
-    controls.className = "qty";
-
-    const minus = document.createElement("button");
-    minus.type = "button";
-    minus.textContent = "−";
-    minus.setAttribute("aria-label", "Remove one " + item.name);
-    minus.addEventListener("click", () => {
-      cart[id]--;
-      if (cart[id] <= 0) delete cart[id];
-      renderProducts();
-      renderCart();
+      renderMenu();
     });
 
-    const quantity = document.createElement("b");
-    quantity.textContent = String(cart[id]);
+    document.addEventListener("click", event => {
+      const addButton = event.target.closest("[data-add]");
+      const removeButton = event.target.closest("[data-remove]");
 
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.textContent = "+";
-    plus.setAttribute("aria-label", "Add one " + item.name);
-    plus.addEventListener("click", () => {
-      if (cart[id] >= 50) {
-        alert("Maximum 50 units of each item.");
+      if (addButton) addItem(addButton.dataset.add);
+      if (removeButton) removeItem(removeButton.dataset.remove);
+    });
+
+    document.querySelectorAll('input[name="orderType"]').forEach(input => {
+      input.addEventListener("change", () => {
+        const isDelivery = getOrderType() === "delivery";
+        document.getElementById("addressField").classList.toggle("hidden", !isDelivery);
+        renderCart();
+      });
+    });
+
+    document.querySelectorAll('input[name="paymentType"]').forEach(input => {
+      input.addEventListener("change", () => {
+        const payment = getPaymentType();
+        const notices = {
+          telebirr: "Telebirr: 0907490883. Follow the payment instructions sent by the bot. Payment must be confirmed by the restaurant.",
+          cbe: "CBE account: 1000539408872. Use your unique order code as the payment reference when possible. Payment must be confirmed by the restaurant.",
+          cash: "You selected cash payment. Please follow the restaurant's instructions for payment."
+        };
+        document.getElementById("paymentNotice").textContent = notices[payment];
+      });
+    });
+
+    document.getElementById("locationButton").addEventListener("click", () => {
+      const status = document.getElementById("locationStatus");
+
+      if (!navigator.geolocation) {
+        status.textContent = "Location sharing is not supported by this device.";
         return;
       }
-      cart[id]++;
-      renderProducts();
-      renderCart();
+
+      status.textContent = "Requesting your location…";
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          customerLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+
+          status.textContent = "Location captured. It will be included with your order.";
+        },
+        () => {
+          status.textContent = "Unable to get location. Please enter your Adama address manually.";
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+      );
     });
 
-    controls.append(minus, quantity, plus);
-    row.append(info, controls);
-    root.appendChild(row);
-  });
+    document.getElementById("placeOrder").addEventListener("click", () => {
+      const entries = Object.entries(cart).filter(([, quantity]) => quantity > 0);
 
-  const sum = totals();
-  const totalsRoot = document.getElementById("totals");
-  totalsRoot.replaceChildren();
+      if (entries.length === 0) {
+        alert("Please add at least one item to your cart.");
+        return;
+      }
 
-  function addLine(label, amount, extraClass) {
-    const row = document.createElement("div");
-    row.className = "total-line" + (extraClass ? " " + extraClass : "");
-    const left = document.createElement("span");
-    left.textContent = label;
-    const right = document.createElement("span");
-    right.textContent = money(amount);
-    row.append(left, right);
-    totalsRoot.appendChild(row);
-  }
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const orderType = getOrderType();
+      const address = document.getElementById("address").value.trim();
+      const notes = document.getElementById("notes").value.trim();
 
-  addLine("Subtotal", sum.subtotal);
-  if (sum.fee) addLine("Delivery fee", sum.fee);
-  addLine("Total", sum.total, "grand-total");
+      if (!name) {
+        alert("Please enter your full name.");
+        document.getElementById("customerName").focus();
+        return;
+      }
 
-  document.getElementById("stickyTotal").textContent = money(sum.total);
-  document.getElementById("ageWrap").style.display = isAlcoholInCart() ? "block" : "none";
-  document.getElementById("deliveryFields").style.display =
-    orderType() === "delivery" ? "block" : "none";
-}
+      if (!phone || phone.replace(/\D/g, "").length < 9) {
+        alert("Please enter a valid phone number.");
+        document.getElementById("phone").focus();
+        return;
+      }
 
-document.querySelectorAll('input[name="orderType"]').forEach(input => {
-  input.addEventListener("change", renderCart);
-});
+      if (orderType === "delivery" && !address) {
+        alert("Please enter your delivery address in Adama.");
+        document.getElementById("address").focus();
+        return;
+      }
 
-document.getElementById("locationButton").addEventListener("click", () => {
-  if (!navigator.geolocation) {
-    alert("GPS is not available. Please type your delivery address.");
-    return;
-  }
+      if (!document.getElementById("confirmDetails").checked) {
+        alert("Please confirm that your order details are correct.");
+        return;
+      }
 
-  const status = document.getElementById("locationStatus");
-  status.textContent = "Requesting your location...";
+      const hasAlcohol = entries.some(([id]) => {
+        const item = MENU.find(product => product.id === id);
+        return item && item.alcohol;
+      });
 
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      gps = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
+      if (hasAlcohol && !document.getElementById("ageConfirmed").checked) {
+        alert("Please confirm the legal age requirement before ordering alcoholic drinks.");
+        return;
+      }
+
+      const payload = {
+        store: "Salsacos",
+        location: "Adama, Ethiopia",
+        channel: "@salsacos",
+        items: entries.map(([id, quantity]) => ({ id, quantity })),
+        order_type: orderType,
+        payment_type: getPaymentType(),
+        name,
+        phone,
+        address: orderType === "delivery" ? address : "",
+        notes,
+        subtotal: getSubtotal(),
+        delivery_fee: getDeliveryFee(),
+        total: getTotal(),
+        age_confirmed: hasAlcohol && document.getElementById("ageConfirmed").checked,
+        latitude: customerLocation ? customerLocation.latitude : null,
+        longitude: customerLocation ? customerLocation.longitude : null
       };
-      status.textContent =
-        `📍 Location received: ${gps.latitude.toFixed(5)}, ${gps.longitude.toFixed(5)}`;
-    },
-    error => {
-      gps = null;
-      status.textContent = "Could not access GPS. Please enter your address manually.";
-      console.warn("Geolocation error:", error.message);
-    },
-    {enableHighAccuracy: true, timeout: 15000, maximumAge: 60000}
-  );
-});
 
-document.getElementById("address").addEventListener("input", () => {
-  // GPS is retained if the customer also enters an address.
-});
+      if (tg && tg.initData) {
+        try {
+          tg.sendData(JSON.stringify(payload));
+          document.getElementById("placeOrder").textContent = "Order Submitted";
+          document.getElementById("placeOrder").disabled = true;
+        } catch (error) {
+          alert("Could not submit your order. Please close and reopen the Mini App.");
+        }
+      } else {
+        alert(
+          "This page is not opened inside Telegram, so it cannot send the order to the bot. " +
+          "Open the Salsacos Mini App through your Telegram bot."
+        );
+        console.log("Order payload for testing:", payload);
+      }
+    });
 
-document.getElementById("viewCartButton").addEventListener("click", () => {
-  document.getElementById("cartSection").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-});
-
-document.getElementById("submitButton").addEventListener("click", () => {
-  if (submitting) return;
-
-  if (!tg) {
-    alert("Please open this page inside your Telegram bot.");
-    return;
-  }
-
-  const selected = Object.keys(cart)
-    .filter(id => cart[id] > 0)
-    .map(id => ({id, quantity: cart[id]}));
-
-  if (!selected.length) {
-    alert("Please add at least one item to your cart.");
-    return;
-  }
-
-  const name = document.getElementById("customerName").value.trim();
-  const phone = document.getElementById("customerPhone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const type = orderType();
-  const payment = paymentType();
-
-  if (name.length < 2) {
-    alert("Please enter your full name.");
-    return;
-  }
-
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length < 7 || digits.length > 15) {
-    alert("Please enter a valid phone number.");
-    return;
-  }
-
-  if (type === "delivery" && address.length < 3 && !gps) {
-    alert("Please enter a delivery address or share your GPS location.");
-    return;
-  }
-
-  if (isAlcoholInCart() && !document.getElementById("ageConfirmed").checked) {
-    alert("Please confirm that you are of legal drinking age.");
-    return;
-  }
-
-  const payload = {
-    items: selected,
-    order_type: type,
-    payment_type: payment,
-    name,
-    phone,
-    address,
-    age_confirmed: document.getElementById("ageConfirmed").checked
-  };
-
-  if (type === "delivery" && gps) {
-    payload.latitude = gps.latitude;
-    payload.longitude = gps.longitude;
-  }
-
-  const submit = document.getElementById("submitButton");
-  submitting = true;
-  submit.disabled = true;
-  submit.textContent = "Submitting order...";
-
-  try {
-    tg.sendData(JSON.stringify(payload));
-  } catch (error) {
-    submitting = false;
-    submit.disabled = false;
-    submit.textContent = "Submit order";
-    console.error(error);
-    alert("Could not send the order. Please try again.");
-  }
-});
-
-renderCategories();
-renderProducts();
-renderCart();
-</script>
+    renderMenu();
+    renderCart();
+  </script>
 </body>
 </html>
-```
